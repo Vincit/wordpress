@@ -14,6 +14,6 @@ Add the following under extra and be exact. Composer doesn't really like it's us
 ```
 
 ### Add this package
-Run `composer require vincit/wordpress`.
+Run `composer require --dev vincit/wordpress [dev-master]`.
 
 Finally run `vagrant up`.
