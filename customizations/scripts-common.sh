@@ -10,3 +10,11 @@ case "$response" in
     echo "Why not?"
     ;;
 esac
+
+echo "Enabling backups of the database..."
+croncmd="/data/wordpress/customizations/database-backup.sh"
+cronjob="*/15 * * * * $croncmd"
+( crontab -u vagrant -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -u vagrant -
+
+echo "Backing the database up..."
+./database-backup.sh
