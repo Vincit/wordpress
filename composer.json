@@ -1,6 +1,6 @@
 {
   "name": "vincit/wordpress",
-  "type": "wordpress-drop-in",
+  "type": "seravo-wordpress-dropin",
   "license": "GPL-2.0",
   "authors": [
       {

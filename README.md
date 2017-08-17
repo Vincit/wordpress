@@ -6,15 +6,14 @@ Customizations and improvements for [Seravo/wordpress](https://github.com/Seravo
 Clone [Seravo/wordpress](https://github.com/Seravo/wordpress), change values in config-sample.yml, and save it as config.yml.
 
 ### Modify your composer.json
-Add the following under extra:
+Add the following under extra and be exact. Composer doesn't really like it's users.
 ```
 "dropin-paths": {
-  ".": ["type:wordpress-drop-in"]
+  ".": ["type:seravo-wordpress-dropin"]
 }
 ```
 
 ### Add this package
 Run `composer require vincit/wordpress`.
 
-Delete composer.lock and run `vagrant up`.
-
+Finally run `vagrant up`.
