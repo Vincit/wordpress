@@ -3,7 +3,12 @@
 Customizations and improvements for [Seravo/wordpress](https://github.com/Seravo/wordpress). Inspired by [kehittamo/kehittamo-seravo-addons](https://github.com/kehittamo/kehittamo-seravo-addons).
 
 ## Usage
-Clone [Seravo/wordpress](https://github.com/Seravo/wordpress), change values in config-sample.yml, and save it as config.yml.
+~~clone [Seravo/wordpress](https://github.com/Seravo/wordpress)~~, change values in config-sample.yml, and save it as config.yml.
+Seravo/wordpress requires a patch so it can run the necessary scripts. Use [this fork](https://github.com/kehittamo/wordpress) instead until the patch is merged.
+
+```
+git clone git@github.com:kehittamo/wordpress.git wordpress.local
+```
 
 ### Modify your composer.json
 Add the following under extra and be exact. Composer doesn't really like it's users.
