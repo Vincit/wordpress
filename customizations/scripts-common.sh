@@ -72,7 +72,7 @@ installer() {
 
       echo "Replacing composer.json..."
       rm composer.json composer.lock # I just don't want to deal with cp
-      cp customizations/composer.json composer.json # TODO: Maybe make it modular?
+      cp customizations/composer-sample.json composer.json # TODO: Maybe make it modular?
       composer install
 
       echo "Removing the default user..."
