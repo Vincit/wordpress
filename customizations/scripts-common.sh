@@ -79,7 +79,7 @@ installer() {
       run "wp user delete $user_id --yes"
 
       echo "Turning all plugins on..."
-      run "wp plugin list --field=name --format=csv | xargs sudo -u vagrant -i -- wp plugin activate --quiet"
+      run "wp plugin list --status=inactive --field=name --format=csv | xargs sudo -u vagrant -i -- wp plugin activate --quiet"
 
       echo "Creating a new admin user..."
       password=$(openssl rand -base64 32 | head -c32 2> /dev/null)
