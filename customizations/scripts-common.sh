@@ -17,15 +17,13 @@ sleep_fraction() {
 # FORCE_INSTALLER=1 vagrant up would be so much better but doesn't work unfortunately.
 
 if [ -f forceinstall ]; then
-    FORCE_INSTALLER=1
+  FORCE_INSTALLER=1
 else
   FORCE_INSTALLER=0
 fi
 
-echo # Spacing!
 cat customizations/logo.txt
-echo
-echo
+
 echo "Checking if the default user still exists..."
 run "wp user get vagrant --field=ID &> /data/wordpress/usercheck" # We can access that file.
 
@@ -46,7 +44,6 @@ fi
 rm usercheck
 
 installer() {
-
   read -r -p "==> Run installer? (Y/n): " response
   case "$response" in
     [nN][oO]|[nN])
