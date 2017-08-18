@@ -79,7 +79,7 @@ installer() {
       run "wp plugin list --status=inactive --field=name --format=csv | xargs sudo -u vagrant -i -- wp plugin activate --quiet"
 
       echo "Creating a new admin user..."
-      password=$(openssl rand -base64 32 | head -c32)
+      password=$(openssl rand -base64 32 2> /dev/null | head -c32)
       run "wp user create 'vincit.admin' wordpress@vincit.fi --role='administrator' --display_name='Administrator' --user_pass='$password'"
       echo "Username: vincit.admin"
       echo "Password: $password"
