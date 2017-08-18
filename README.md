@@ -11,12 +11,14 @@ git clone git@github.com:kehittamo/wordpress.git wordpress.local
 ```
 
 ### Modify your composer.json
-Add the following under extra and be exact. Composer doesn't really like it's users.
+Merge composer.json with this:
 ```
 "dropin-paths": {
   ".": ["type:seravo-wordpress-dropin"]
 }
 ```
+
+This is only necessary until we get [upstream support for](https://github.com/Seravo/wordpress/issues/67) drop-ins.
 
 ### Add this package
 Run `composer require --dev vincit/wordpress [dev-master]`.
