@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-source helpers.sh
-
 theme_installer() {
   rootwd=$0 # Passed into, use later.
 

@@ -9,8 +9,8 @@ else
   FORCE_INSTALLER=0
 fi
 
-source helpers.sh
-source theme-installer.sh
+source customizations/helpers.sh
+source customizations/theme-installer.sh
 
 installer() {
   read -r -p "==> Run installer? (Y/n): " response
