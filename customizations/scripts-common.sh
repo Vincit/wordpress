@@ -6,3 +6,4 @@
 cat customizations/logo.txt
 
 source customizations/installer.sh
+installer

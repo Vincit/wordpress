@@ -10,10 +10,10 @@ sleep_fraction() {
 }
 
 recursive_replace() {
-  path=$0
-  globstr=$1
-  search=$2
-  replace=$3
+  path=$1
+  globstr=$2
+  search=$3
+  replace=$4
 
   find "$path" -type f -name "$globstr" -exec sed -i '' s/"$search"/"$replace"/ {} +
 }

@@ -1,18 +1,31 @@
 #!/usr/bin/env bash
 
-# Create a file with filename forceinstall to force run the installer
-# FORCE_INSTALLER=1 vagrant up would be so much better but doesn't work unfortunately.
-
-if [ -f forceinstall ]; then
-  FORCE_INSTALLER=1
-else
-  FORCE_INSTALLER=0
-fi
+# Naive, but getopts for a single flag is just... no.
+# if [[ "$*" == *-f* ]]; then
+  # FORCE_INSTALLER=1
+# else
+  # FORCE_INSTALLER=0
+# fi
 
 source customizations/helpers.sh
 source customizations/theme-installer.sh
 
 installer() {
+    # echo "Checking if the default user still exists..."
+    run "wp user get vagrant --field=ID &> /data/wordpress/usercheck" # We can access that file.
+
+    user_id=$(<usercheck)
+    if grep --quiet Error <<< "$user_id"; then
+      echo "Default user (vagrant) not found."
+      echo "Assuming existing installation."
+      user_id=0 # The interpreter will be very sad if this isn't a number.
+
+    fi
+    rm usercheck
+
+  if [ "$user_id" -eq 1 ]; then
+    echo "The default user still exists. The installer should be ran."
+  fi
   read -r -p "==> Run installer? (Y/n): " response
   case "$response" in
     [nN][oO]|[nN])
@@ -43,48 +56,21 @@ installer() {
 
       theme_installer "$(pwd)"
 
-      echo "Removing the default user..."
-      run "wp user delete $user_id --yes"
-
       echo "Turning all plugins on..."
       run "wp plugin list --status=inactive --field=name --format=csv | xargs sudo -u vagrant -i -- wp plugin activate --quiet"
 
-      echo "Creating a new admin user..."
-      password=$(openssl rand -base64 32 2> /dev/null | head -c32)
-      run "wp user create 'vincit.admin' wordpress@vincit.fi --role='administrator' --display_name='Administrator' --user_pass='$password'"
-      echo "Username: vincit.admin"
-      echo "Password: $password"
+      if [ "$user_id" -eq 0 ]; then
+        echo "Default user wasn't found, skipping user deletion and creation..."
+      else
+        echo "Removing the default user..."
+        run "wp user delete $user_id --yes"
 
-      if [ "$FORCE_INSTALLER" -eq 1 ]; then
-        echo "If the vincit.admin user already existed you might see an error above."
+        echo "Creating a new admin user..."
+        password=$(openssl rand -base64 32 2> /dev/null | head -c32)
+        run "wp user create 'vincit.admin' wordpress@vincit.fi --role='administrator' --display_name='Administrator' --user_pass='$password'"
+        echo "Username: vincit.admin"
+        echo "Password: $password"
       fi
       ;;
   esac
 }
-
-echo "Checking if the default user still exists..."
-run "wp user get vagrant --field=ID &> /data/wordpress/usercheck" # We can access that file.
-
-user_id=$(<usercheck)
-if grep --quiet Error <<< "$user_id"; then
-  echo "Default user (vagrant) not found."
-  echo "Assuming existing installation."
-  user_id=0 # The interpreter will be very sad if this isn't a number.
-
-  if [ "$FORCE_INSTALLER" -eq 1 ]; then
-    echo "Force install enabled."
-  else
-    echo "To force run the installer, create a file with the name forceinstall to the project root."
-    echo "$(pwd) $ touch forceinstall"
-  fi
-fi
-rm usercheck
-
-if [ "$user_id" -eq 1 ]; then
-  echo "The default user still exists. The installer should be ran."
-  installer
-elif [ "$FORCE_INSTALLER" -eq 1 ]; then
-  echo "The default user doesn't exist anymore, but force installer is enabled."
-  installer
-fi
-
