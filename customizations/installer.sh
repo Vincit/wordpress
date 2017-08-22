@@ -17,7 +17,7 @@ conquer() {
 
 backup() {
   echo "Enabling backups of the database..."
-  run /data/wordpress/customizations/vagrant-cron.sh
+  run /data/wordpress/customizations/vagrant-cron.sh &> /dev/null # It never fails, stop whining about "no crontab for vagrant"
 
   echo "Backing the database up..."
   run /data/wordpress/customizations/database-backup.sh
