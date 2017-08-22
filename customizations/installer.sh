@@ -1,12 +1,5 @@
 #!/usr/bin/env bash
 
-# Naive, but getopts for a single flag is just... no.
-# if [[ "$*" == *-f* ]]; then
-  # FORCE_INSTALLER=1
-# else
-  # FORCE_INSTALLER=0
-# fi
-
 source customizations/helpers.sh
 source customizations/theme-installer.sh
 
