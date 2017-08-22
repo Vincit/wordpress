@@ -22,16 +22,19 @@ theme_installer() {
   mv wordpress-theme-base "$themename"
   cd "$themename" || exit 1
 
+  recursive_replace "." "*" "wordpress-theme-base" "$themename"
+
   # git remote remove composer
   git remote remove origin
   git remote add origin "$repo"
-
-  recursive_replace "." "*" "wordpress-theme-base" "$themename"
+  git add .
+  git commit -m "Initial commit"
+  git push -u origin master
 
   cd "$rootwd" || exit 1
   recursive_replace "$rootwd" "composer.json" "wordpress-theme-base" "$themename"
 
-  echo "Theme generated. Assuming you provided a valid repository URL, you should be able to just push into it."
+  echo "Theme generated. Assuming you provided a valid repository URL, the initial commit has been pushed."
   echo "Remember to add it to Private Packagist or Composer will refuse to work: https://packagist.com/orgs/vincit/packages/add"
 }
 
