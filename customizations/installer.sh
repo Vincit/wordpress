@@ -38,13 +38,11 @@ plugins() {
 
 admin() {
   # echo "Checking if the default user still exists..."
-  run "wp user get vagrant --field=ID &> /data/wordpress/usercheck" # We can access that file.
-
-  user_id=$(<usercheck)
+  user_id=$(run "wp user get vagrant --field=ID")
   if grep --quiet Error <<< "$user_id"; then
     user_id=0 # The interpreter will be very sad if this isn't a number.
   fi
-  rm usercheck
+  user_id=${user_id//[^0-9]*/} # Sanitize the value, strip everything else out.
 
   if [ "$user_id" -eq 1 ]; then
     echo "Removing the default user..."
