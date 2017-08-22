@@ -54,7 +54,7 @@ installer() {
       cp customizations/composer-sample.json composer.json # TODO: Maybe make it modular?
       composer install
 
-      theme_installer
+      prompt_theme_installer
 
       echo "Turning all plugins on..."
       run "wp plugin list --status=inactive --field=name --format=csv | xargs sudo -u vagrant -i -- wp plugin activate --quiet"
