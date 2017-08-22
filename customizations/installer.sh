@@ -67,6 +67,31 @@ admin() {
   fi
 }
 
+ignore() {
+  echo "Checking if there's any files that shouldn't be tracked in Git..."
+  gitignore=$(<.gitignore)
+
+  if ! grep --quiet "/.vincit.d" <<< "$gitignore"; then
+    echo "Ignoring /.vincit.d (used to detect installation status)"
+    echo /.vincit.d >> .gitignore
+  fi
+
+  if ! grep --quiet "/customizations" <<< "$gitignore"; then
+    echo "Ignoring /customizations/ (managed by Composer)"
+    echo /customizations >> .gitignore
+  fi
+
+  if ! grep --quiet "/install.sh" <<< "$gitignore"; then
+    echo "Ignoring /install.sh (managed by Composer)"
+    echo /install.sh >> .gitignore
+  fi
+
+  if ! grep --quiet "/vagrant-up-customizer.sh" <<< "$gitignore"; then
+    echo "Ignoring vagrant-up-customizer.sh (managed by Composer)"
+    echo /vagrant-up-customizer.sh >> .gitignore
+  fi
+}
+
 install() {
   echo "Running the installer..."
   for fn in "$@"; do
@@ -78,11 +103,11 @@ installer() {
   # Run full installer if this file doesn't exist.
 
   if [ ! -f .vincit.d ]; then
-    install "conquer" "backup" "composertask" "plugins" "prompt_theme_installer" "admin"
+    install "conquer" "backup" "composertask" "plugins" "prompt_theme_installer" "admin" "ignore"
     touch .vincit.d
   else
     # Run these tasks every time
-    install "conquer" "backup" "admin"
+    install "conquer" "backup" "admin" "ignore"
   fi
 
   exit 0
