@@ -15,7 +15,7 @@ prompt_theme_installer() {
 theme_installer() {
   rootwd=$(pwd)
   read -r -p "==> Great! What name do you want to give to it? [A-Za-z0-9_] " themename
-  read -r -p "==> And what is the repository URL?  (git@bitbucket...)" repo
+  read -r -p "==> And what is the repository URL?  (git@bitbucket...) " repo
 
   composer require vincit/wordpress-theme-base dev-master --prefer-source
   cd htdocs/wp-content/themes || exit 1
