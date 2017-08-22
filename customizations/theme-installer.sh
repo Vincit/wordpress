@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 prompt_theme_installer() {
-  read -r -p"==> Would you like to install the base theme? (y/N)" response
+  read -r -t 5 -p"==> Would you like to install the base theme? (y/N)" response
   case "$response" in
     [yY][eE][sS]|[yY])
       theme_installer
