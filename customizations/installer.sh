@@ -34,6 +34,7 @@ composertask() {
   echo "Replacing composer.json..."
   rm composer.json composer.lock # I just don't want to deal with cp
   cp customizations/composer-sample.json composer.json # TODO: Maybe make it modular?
+  composer update mirrors # To actually use the Private Packagist that we just enabled
   composer install
 }
 
