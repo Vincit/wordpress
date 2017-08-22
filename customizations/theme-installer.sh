@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 theme_installer() {
-  rootwd=$1 # Passed into, use later.
+  rootwd=$(pwd)
 
   read -r -t 5 -p"==> Would you like to install the base theme? (y/N)" response
   case "$response" in

@@ -22,7 +22,7 @@ main() {
       ;;
     2)
       echo
-      theme_installer "$(pwd)"
+      theme_installer
       exit
       ;;
     0)
