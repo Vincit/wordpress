@@ -15,5 +15,7 @@ recursive_replace() {
   search=$3
   replace=$4
 
-  find "$path" -type f -name "$globstr" -exec sed -i '' s/"$search"/"$replace"/ {} +
+  # cd $path || exit 1
+  # perl -pi -w -e "s/$search/$replace/g;" $globstr
+  find "$path" -type f -name "$globstr" -exec perl -i -p -e 'BEGIN {$from=shift @ARGV; $to=shift @ARGV}; s/\Q$from\E/$to/g' "$search" "$replace" {} +
 }
