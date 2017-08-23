@@ -13,27 +13,37 @@ conquer() {
   sleep 1
   echo -ne '##################### (100%)\r'
   echo -ne '\n'
+  echo
 }
 
 backup() {
   echo "Enabling backups of the database..."
   run /data/wordpress/customizations/vagrant-cron.sh &> /dev/null # It never fails, stop whining about "no crontab for vagrant"
+  echo
 
   echo "Backing the database up..."
   run /data/wordpress/customizations/database-backup.sh
+  echo
 }
 
 composertask() {
   echo "Replacing composer.json..."
   rm composer.json composer.lock # I just don't want to deal with cp
   cp customizations/composer-sample.json composer.json # TODO: Maybe make it modular?
+
+  echo "Updating Composer mirrors..."
   composer update mirrors # To actually use the Private Packagist that we just enabled
+
+  echo "Running composer install..."
   composer install
+
+  echo
 }
 
 plugins() {
   echo "Turning all plugins on..."
   run "wp plugin list --status=inactive --field=name --format=csv | xargs sudo -u vagrant -i -- wp plugin activate --quiet"
+  echo
 }
 
 admin() {
@@ -56,6 +66,7 @@ admin() {
   else
     echo "Default user wasn't found, skipping user deletion and creation..."
   fi
+  echo
 }
 
 ignore() {
@@ -85,6 +96,7 @@ ignore() {
 
 install() {
   echo "Running the installer..."
+  echo
   for fn in "$@"; do
     eval "$fn"
   done
@@ -100,6 +112,11 @@ installer() {
     # Run these tasks every time
     install "conquer" "backup" "admin" "ignore"
   fi
+
+  echo
+  echo "Missing something? You can run this installation wizard manually."
+  echo "$ ./install.sh"
+  echo
 
   exit 0
 }
