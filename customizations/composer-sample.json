@@ -55,9 +55,6 @@
     {
       "type": "composer",
       "url": "https://repo.packagist.com/vincit/"
-    },
-    {
-      "packagist.org": false
     }
   ],
   "require": {
