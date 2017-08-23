@@ -1,10 +1,15 @@
-# Vincit WordPress
+# Vincit WordPress drop-ins
 
 Customizations and improvements for [Seravo/wordpress](https://github.com/Seravo/wordpress). Inspired by [kehittamo/kehittamo-seravo-addons](https://github.com/kehittamo/kehittamo-seravo-addons).
 
+## Why & how
+[Seravo.com](https://seravo.com) uses an identical project layout in their production instances. It uses the same folder structure as [roots/bedrock](https://github.com/roots/bedrock) and has lots of built in goodies such as Composer, Xdebug and Mailcathcer.
+
+Seravo/wordpress serves as a skeleton for a WordPress project. You manage WordPress, themes and plugins with Composer so each invidual piece is version controlled separately. Things that are already version controlled (WordPress, existing themes and plugins from the WordPress.org repositories) are not committed to Git.
+
 ## Usage
-~~clone [Seravo/wordpress](https://github.com/Seravo/wordpress)~~, change values in config-sample.yml, and save it as config.yml.
 Seravo/wordpress requires a patch so it can run the necessary scripts. Use [this fork](https://github.com/kehittamo/wordpress) instead until the patch is merged.
+~~Clone [Seravo/wordpress](https://github.com/Seravo/wordpress)~~, edit the values in config-sample.yml, and save the file as config.yml. If in doubt; follow the instructions there.
 
 ```
 git clone git@github.com:kehittamo/wordpress.git wordpress.local
@@ -21,18 +26,48 @@ Merge composer.json with this:
 This is only necessary until we get [upstream support for](https://github.com/Seravo/wordpress/issues/67) drop-ins.
 
 ### Add this package
-Run `composer require --dev vincit/wordpress [dev-master]`.
+Run `composer require --dev vincit/wordpress` for the stable version.
+
+Use `composer require --dev vincit/wordpress dev-master` to get the latest version.
 
 Finally run `vagrant up`.
 
-## Developing this further
-As you probably don't want to commit every change you make, this is for you. As Composer installs this as a drop-in, you have to do some interesting things to make your life easier.
+### Commit the project
+After running `vagrant up`, you're ready to version control the project. Keep the history of Seravo/wordpress; that means do not delete the .git folder.
 
-One solution is to clone this in a different directory than Seravo/wordpress, and copy the files over when they change.
+Running `git status` should look something like this:
 ```
-git clone git@github.com:Seravo/wordpress.git wordpress
-git clone git@github.com:Vincit/wordpress.git wordpress-dropin
-cp wordpress-dropin/* wordpress/ # Run every time files change (or use a loop!)
+# On branch: master  |  [*] => $e*
+#
+➤ Changes not staged for commit
+#
+#       modified:  [1] .gitignore
+#       modified:  [2] composer.json
+#       modified:  [3] composer.lock
+#        deleted:  [4] config-sample.yml
+#
+➤ Untracked files
+#
+#      untracked:  [5] config.yml
+#
 ```
 
-You might notice that this does not copy vagrant-up-customizer.sh; I'm sure you can work around that if you have to.
+Make the initial commit:
+```
+git add .gitignore composer.json composer.lock config-sample.yml config.yml && git commit -m "Initial commit"
+```
+
+Rename the origin remote:
+```
+git remote rename origin seravo
+```
+
+Add a new origin remote:
+```
+git remote add origin git@bitbucket.com:vendor/project.git
+```
+
+Push into the new remote:
+```
+git push -u origin master
+```
