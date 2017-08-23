@@ -3,7 +3,7 @@
 Customizations and improvements for [Seravo/wordpress](https://github.com/Seravo/wordpress). Inspired by [kehittamo/kehittamo-seravo-addons](https://github.com/kehittamo/kehittamo-seravo-addons).
 
 ## Why & how
-[Seravo.com](https://seravo.com) uses an identical project layout in their production instances. It uses the same folder structure as [roots/bedrock](https://github.com/roots/bedrock) and has lots of built in goodies such as Composer, Xdebug and Mailcathcer.
+[Seravo.com](https://seravo.com) uses an identical project layout in their production instances. It uses the same folder structure as [roots/bedrock](https://github.com/roots/bedrock) and has lots of built in goodies such as Composer, Xdebug and Mailcatcher.
 
 Seravo/wordpress serves as a skeleton for a WordPress project. You manage WordPress, themes and plugins with Composer so each invidual piece is version controlled separately. Things that are already version controlled (WordPress, existing themes and plugins from the WordPress.org repositories) are not committed to Git.
 
