@@ -26,7 +26,7 @@ Merge composer.json with this:
 This is only necessary until we get [upstream support for](https://github.com/Seravo/wordpress/issues/67) drop-ins.
 
 ### Add this package
-Run `composer require --dev vincit/wordpress` for the stable version.
+~~Run `composer require --dev vincit/wordpress` for the stable version.~~
 
 Use `composer require --dev vincit/wordpress dev-master` to get the latest version.
 
