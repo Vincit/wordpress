@@ -86,6 +86,7 @@
     "roots/soil": "3.7.0",
     "aucor/polylang-copy-content": ">=0.1.1",
     "aucor/dynamic-mo-loader": ">=1.1.1",
+    "aucor/wp_query-route-to-rest-api": ">=1.1.1",
     "seravo/seravo-plugin": ">=1.4.0",
     "devgeniem/wp-sanitize-accented-uploads": "^1.2",
 
