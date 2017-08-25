@@ -8,22 +8,11 @@ Customizations and improvements for [Seravo/wordpress](https://github.com/Seravo
 Seravo/wordpress serves as a skeleton for a WordPress project. You manage WordPress, themes and plugins with Composer so each invidual piece is version controlled separately. Things that are already version controlled (WordPress, existing themes and plugins from the WordPress.org repositories) are not committed to Git.
 
 ## Usage
-Seravo/wordpress requires a patch so it can run the necessary scripts. Use [this fork](https://github.com/kehittamo/wordpress) instead until the patch is merged.
-~~Clone [Seravo/wordpress](https://github.com/Seravo/wordpress)~~, edit the values in config-sample.yml, and save the file as config.yml. If in doubt; follow the instructions there.
+Clone [Seravo/wordpress](https://github.com/Seravo/wordpress), edit the values in config-sample.yml, and save the file as config.yml. If in doubt; follow the instructions in Seravo/wordpress.
 
 ```
 git clone git@github.com:kehittamo/wordpress.git wordpress.local
 ```
-
-### Modify your composer.json
-Merge composer.json with this:
-```
-"dropin-paths": {
-  ".": ["type:seravo-wordpress-dropin"]
-}
-```
-
-This is only necessary until we get [upstream support for](https://github.com/Seravo/wordpress/issues/67) drop-ins.
 
 ### Add this package
 ~~Run `composer require --dev vincit/wordpress` for the stable version.~~
