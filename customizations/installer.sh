@@ -48,7 +48,7 @@ plugins() {
 
 admin() {
   # echo "Checking if the default user still exists..."
-  user_id=$(run "wp user get vagrant --field=ID")
+  user_id=$(run "wp user get vagrant --field=ID --skip-plugins --skip-themes") # Notices break things
   if grep --quiet Error <<< "$user_id"; then
     user_id=0 # The interpreter will be very sad if this isn't a number.
   fi
