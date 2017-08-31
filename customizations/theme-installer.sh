@@ -26,6 +26,10 @@ theme_installer() {
   cd "$themename" || exit 1
 
   recursive_replace "." "*" "wordpress-theme-base" "$themename"
+  
+  echo "Installing dependencies and building the theme..."
+  npm install
+  composer install
 
   # Keeping the history might prove useful sometime, don't delete .git folder!
   # git remote remove composer
