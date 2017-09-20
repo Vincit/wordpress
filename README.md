@@ -11,7 +11,7 @@ Seravo/wordpress serves as a skeleton for a WordPress project. You manage WordPr
 Clone [Seravo/wordpress](https://github.com/Seravo/wordpress), edit the values in config-sample.yml, and save the file as config.yml. If in doubt; follow the instructions in Seravo/wordpress.
 
 ```
-git clone git@github.com:kehittamo/wordpress.git wordpress.local
+git clone git@github.com:Seravo/wordpress.git wordpress.local
 ```
 
 ### Add this package
