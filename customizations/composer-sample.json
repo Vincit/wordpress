@@ -108,6 +108,6 @@
     "wordpress-install-dir": "htdocs/wordpress"
   },
   "require-dev": {
-    "vincit/wordpress": "dev-master"
+    "vincit/wordpress": "@dev"
   }
 }
