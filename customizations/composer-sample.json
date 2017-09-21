@@ -30,7 +30,12 @@
     "wordpress", "composer", "wp", "wp-palvelu", "seravo"
   ],
   "config": {
-    "preferred-install": "dist"
+    "preferred-install": {
+      "vincit/wordpress-theme-base": "source",
+      "vincit/*": "source",
+      "*": "dist"
+    }
+
   },
   "autoload": {
     "psr-0": {"WordPress\\Installer": "scripts"}
