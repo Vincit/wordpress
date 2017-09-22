@@ -50,6 +50,10 @@ plugins() {
 }
 
 admin() {
+  echo "Setting the language to English (US)..."
+  echo "Prefer something else? Create an user account and select the language you want to use. WordPress should be en_US for performance and developer happiness."
+  run "wp language core activate en_US"
+
   # echo "Checking if the default user still exists..."
   user_id=$(run "wp user get vagrant --field=ID --skip-plugins --skip-themes") # Notices break things
   if grep --quiet Error <<< "$user_id"; then
@@ -75,7 +79,7 @@ admin() {
 ignore() {
   echo "Checking if there's any files that shouldn't be tracked in Git..."
   gitignore=$(<.gitignore)
-  
+
   if ! grep --quiet "/htdocs/wp-content/themes" <<< "$gitignore"; then
     echo "Ignoring /htdocs/wp-content/themes (because themes are separate packages)"
     echo /htdocs/wp-content/themes >> .gitignore
