@@ -36,6 +36,7 @@ composertask() {
   rm composer.json composer.lock # I just don't want to deal with cp
   cp customizations/composer-sample.json composer.json # TODO: Maybe make it modular?
 
+  echo "Removing existing plugins..."
   rm -rf vendor
   rm -rf htdocs/wp-content/plugins/*
 
@@ -58,6 +59,7 @@ admin() {
   echo "Setting the language to English (US)..."
   echo "Prefer something else? Create an user account and select the language you want to use. WordPress should be en_US for performance and developer happiness."
   run "wp language core activate en_US"
+  echo
 
   # echo "Checking if the default user still exists..."
   user_id=$(run "wp user get vagrant --field=ID --skip-plugins --skip-themes") # Notices break things
