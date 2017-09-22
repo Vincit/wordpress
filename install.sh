@@ -66,7 +66,7 @@ main() {
       echo
       echo "Resetting password of vincit.admin..."
       password=$(openssl rand -base64 32 2> /dev/null | head -c32)
-      run "wp user update 'vincit.admin' --user_pass='$password'"
+      run "wp user update 'vincit.admin' --user_pass='$password' > /dev/null 2>&1"
       echo "The new password is: $password"
       read -r -s -n1
       ;;
