@@ -27,6 +27,11 @@ backup() {
 }
 
 composertask() {
+  if ! grep --quiet "seravo/wordpress" composer.json; then
+    echo "composer.json didn't contain seravo/wordpress, skipping task."
+    return
+  fi
+
   echo "Replacing composer.json..."
   rm composer.json composer.lock # I just don't want to deal with cp
   cp customizations/composer-sample.json composer.json # TODO: Maybe make it modular?
