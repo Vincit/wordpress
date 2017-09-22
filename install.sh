@@ -11,6 +11,7 @@ main() {
   echo -e " │    1   Run installer                     │"
   echo -e " │    2   Create a new theme                │"
   echo -e " │    3   Create a new plugin               │"
+  echo -e " │    4   Reset admin password              │"
   echo -e " │    9   Show logo                         │"
   echo -e " │    0   Exit                              │"
   echo -e " └──────────────────────────────────────────┘"
@@ -59,6 +60,14 @@ main() {
     3)
       echo
       echo "Plugin wizard has not graduated yet. Check back later."
+      read -r -s -n1
+      ;;
+    4)
+      echo
+      echo "Resetting password of vincit.admin..."
+      password=$(openssl rand -base64 32 2> /dev/null | head -c32)
+      run "wp user update 'vincit.admin' --user_pass='$password'"
+      echo "The new password is: $password"
       read -r -s -n1
       ;;
     9)
