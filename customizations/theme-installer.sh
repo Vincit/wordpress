@@ -16,6 +16,7 @@ prompt_theme_installer() {
 theme_installer() {
   rootwd=$(pwd)
   read -r -p "==> Great! What name do you want to give to it? [A-Za-z0-9_] " themename
+  read -r -n1 -p "==>  Would you like some fri..sample content with it? (Y/n)" content
   read -r -p "==> And what is the repository URL?  (git@bitbucket...) " repo
   read -r -n1 -p "==> Last thing! Would you like to activate the theme? (Y/n) " activate
   echo
@@ -41,6 +42,17 @@ theme_installer() {
 
   cd "$rootwd" || exit 1
   recursive_replace "$rootwd" "composer.json" "wordpress-theme-base" "$themename"
+  
+  case "$content" in
+    [nN][oO]|[nN])
+      echo "No sample content created."
+    ;;
+  *)
+    echo "Creating sample content..."
+    run "wp plugin install wordpress-importer --activate"
+    run "wget https://raw.githubusercontent.com/WPTRT/theme-unit-test/master/themeunittestdata.wordpress.xml > /data/wordpress/sampledata.xml"
+    run "wp import /data/wordpress/sampledata.xml --authors=skip; rm /data/wordpress/sampledata.xml"
+  esac
 
   case "$activate" in
     [nN][oO]|[nN])
