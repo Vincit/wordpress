@@ -17,6 +17,7 @@ theme_installer() {
   rootwd=$(pwd)
   read -r -p "==> Great! What name do you want to give to it? [A-Za-z0-9_] " themename
   read -r -n1 -p "==>  Would you like some fri- sample content with it? (Y/n) " content
+  read -r -p "==> What is the URL of the WordPress instance that WDS should proxy from? Default is https://wordpress.local: " proxy
   read -r -p "==> And what is the repository URL?  (git@bitbucket...) " repo
   read -r -n1 -p "==> Last thing! Would you like to activate the theme? (Y/n) " activate
   echo
@@ -27,6 +28,7 @@ theme_installer() {
   cd "$themename" || exit 1
 
   recursive_replace "." "*" "wordpress-theme-base" "$themename"
+  recursive_replace "." "*" "https://wordpress.local" "$proxy"
   
   echo "Installing dependencies and building the theme..."
   npm install
