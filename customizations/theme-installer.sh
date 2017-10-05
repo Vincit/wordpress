@@ -54,7 +54,7 @@ theme_installer() {
     echo "Creating sample content..."
     run "wp plugin install wordpress-importer --activate"
     run "wget -O /data/wordpress/sampledata.xml https://raw.githubusercontent.com/WPTRT/theme-unit-test/master/themeunittestdata.wordpress.xml"
-    run "wp import /data/wordpress/sampledata.xml --authors=skip; rm /data/wordpress/sampledata.xml"
+    run "wp import /data/wordpress/sampledata.xml --authors=skip >/dev/null 2>&1; rm /data/wordpress/sampledata.xml" # Nags about deprecated stuff.
   esac
 
   case "$activate" in
