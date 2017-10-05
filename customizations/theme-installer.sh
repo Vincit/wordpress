@@ -42,6 +42,7 @@ theme_installer() {
 
   cd "$rootwd" || exit 1
   recursive_replace "$rootwd" "composer.json" "wordpress-theme-base" "$themename"
+  rm composer.lock # The lockfile contains traces of wordpress-theme-base, and it has to go.
   
   case "$content" in
     [nN][oO]|[nN])
