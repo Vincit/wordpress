@@ -94,7 +94,7 @@
     "aucor/wp_query-route-to-rest-api": ">=1.1.1",
     "seravo/seravo-plugin": ">=1.4.0",
     "devgeniem/wp-sanitize-accented-uploads": "^1.2",
-
+    "elliotcondon/advanced-custom-fields-pro": "^5.6",
 
     "wpackagist-theme/twentyseventeen": "*"
   },
