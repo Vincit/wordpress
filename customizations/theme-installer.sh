@@ -94,6 +94,7 @@ theme_installer() {
   *)
     git add -f "htdocs/wp-content/themes/$themename"
     git rm -r --cached "htdocs/wp-content/themes/$themename/node_modules"
+    git rm -r --cached "htdocs/wp-content/themes/$themename/vendor"
     git commit -n -m "Generate theme $themename"
     echo "The theme is now tracked by Git."
   esac
