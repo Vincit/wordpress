@@ -92,9 +92,10 @@ theme_installer() {
       echo "Then require the theme from the project root: composer require vincit/$themename dev-master --prefer-source"
     ;;
   *)
-    git add -f "htdocs/wp-content/themes/$themename/.gitignore"
-    git add -f "htdocs/wp-content/themes/$themename/"
-    git commit -n -m "Generate theme $themename"
-    echo "The theme is now tracked by Git."
+    # git add -f "htdocs/wp-content/themes/$themename/.gitignore"
+    # git add -f "htdocs/wp-content/themes/$themename/"
+    # git commit -n -m "Generate theme $themename"
+    # echo "The theme is now tracked by Git."
+    echo "Remember to add the theme to the project using git add htdocs/wp-content/themes/$themename"
   esac
 }
