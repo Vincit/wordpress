@@ -113,6 +113,13 @@ ignore() {
   fi
 }
 
+tune_hooks() {
+  echo "Moving pre-commit hook that runs *slow* rspec tests to pre-push..."
+  mv .git/hooks/pre-commit .git/hooks/pre-push
+  echo 
+  
+}
+
 install() {
   echo "Running the installer..."
   echo
@@ -125,7 +132,7 @@ installer() {
   # Run full installer if this file doesn't exist.
 
   if [ ! -f .vincit.d ]; then
-    install "conquer" "backup" "composertask" "plugins" "prompt_theme_installer" "admin" "ignore"
+    install "conquer" "backup" "composertask" "plugins" "prompt_theme_installer" "admin" "ignore" "tune_hooks"
     touch .vincit.d
   else
     # Run these tasks every time
