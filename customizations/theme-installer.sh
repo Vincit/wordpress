@@ -16,9 +16,16 @@ prompt_theme_installer() {
 theme_installer() {
   rootwd=$(pwd)
   read -r -p "==> Great! What name do you want to give to it? [A-Za-z0-9_] " themename
-  read -r -n1 -p "==>  Would you like some fri- sample content with it? (Y/n) " content
-  read -r -p "==> What is the URL of the WordPress instance that WDS should proxy from? Default is https://wordpress.local: " proxy
-  read -r -p "==> And what is the repository URL?  (git@bitbucket...) " repo
+  read -r -n1 -p "==> Would you like some fri- sample content with it? (Y/n) " content
+  echo
+  read -r -n1 -p "==> Do you want to track it in Git? (y/N) " git
+
+  case "$git" in
+    [yY])
+      read -r -p "==> And what is the repository URL?  (git@bitbucket...) " repo
+    ;;
+  esac
+
   read -r -n1 -p "==> Last thing! Would you like to activate the theme? (Y/n) " activate
   echo
 
@@ -28,24 +35,29 @@ theme_installer() {
   cd "$themename" || exit 1
 
   recursive_replace "." "*" "wordpress-theme-base" "$themename"
-  recursive_replace "." "*" "https://wordpress.local" "$proxy"
-  
+
   echo "Installing dependencies and building the theme..."
   npm install
   composer install
 
-  # Keeping the history might prove useful sometime, don't delete .git folder!
-  # git remote remove composer
-  git remote remove origin
-  git remote add origin "$repo"
-  git add .
-  git commit -m "Initial commit"
-  git push -u origin master
+  case "$git" in
+    [yY])
+      # Keeping the history might prove useful sometime, don't delete .git folder!
+      # git remote remove composer
+      git remote remove origin
+      git remote add origin "$repo"
+      git add .
+      git commit -m "Initial commit"
+      git push -u origin master
+    ;;
+  *)
+    rm -rf .git
+  esac
 
   cd "$rootwd" || exit 1
-  recursive_replace "$rootwd" "composer.json" "wordpress-theme-base" "$themename"
-  rm composer.lock # The lockfile contains traces of wordpress-theme-base, and it has to go.
-  
+  # recursive_replace "$rootwd" "composer.json" "wordpress-theme-base" "$themename"
+  composer remove vincit/wordpress-theme-base
+
   case "$content" in
     [nN][oO]|[nN])
       echo "No sample content created."
@@ -72,3 +84,30 @@ theme_installer() {
 
 }
 
+
+  esac
+
+  case "$activate" in
+    [nN][oO]|[nN])
+      echo "Skipping theme activation..."
+    ;;
+  *)
+    echo "Activating theme $themename..."
+    run "wp theme activate $themename"
+  esac
+
+
+  echo "Theme generated."
+
+  case "$git" in
+    [yY])
+      echo "The theme has a Git repository, and needs to be managed by Composer."
+      echo "Add the theme to (Private) Packagist: https://packagist.com/orgs/vincit/packages/add"
+      echo "Then require the theme from the project root: composer require vincit/$themename dev-master --prefer-source"
+    ;;
+  *)
+    git add "htdocs/wp-content/themes/$themename"
+    git commit -m "Generate theme $themename"
+    echo "The theme is now tracked by Git."
+  esac
+}
