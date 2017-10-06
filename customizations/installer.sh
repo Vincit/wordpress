@@ -87,11 +87,6 @@ ignore() {
   echo "Checking if there's any files that shouldn't be tracked in Git..."
   gitignore=$(<.gitignore)
 
-  if ! grep --quiet "/htdocs/wp-content/themes" <<< "$gitignore"; then
-    echo "Ignoring /htdocs/wp-content/themes (because themes are separate packages)"
-    echo /htdocs/wp-content/themes >> .gitignore
-  fi
-
   if ! grep --quiet "/.vincit.d" <<< "$gitignore"; then
     echo "Ignoring /.vincit.d (used to detect installation status)"
     echo /.vincit.d >> .gitignore
