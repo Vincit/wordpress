@@ -20,10 +20,12 @@ theme_installer() {
   read -r -n1 -p "==> Would you like some fri- sample content with it? (Y/n) " content
   echo
   read -r -n1 -p "==> Do you want to track it in Git? (y/N) " git
+  echo
 
   case "$git" in
     [yY])
       read -r -p "==> And what is the repository URL?  (git@bitbucket...) " repo
+      echo
     ;;
   esac
 
@@ -69,24 +71,6 @@ theme_installer() {
     run "wp plugin install wordpress-importer --activate"
     run "wget -O /data/wordpress/sampledata.xml https://raw.githubusercontent.com/WPTRT/theme-unit-test/master/themeunittestdata.wordpress.xml"
     run "wp import /data/wordpress/sampledata.xml --authors=skip >/dev/null 2>&1; rm /data/wordpress/sampledata.xml" # Nags about deprecated stuff.
-  esac
-
-  case "$activate" in
-    [nN][oO]|[nN])
-      echo "Skipping theme activation..."
-    ;;
-  *)
-    echo "Activating theme $themename..."
-    run "wp theme activate $themename"
-  esac
-
-
-  echo "Theme generated. Assuming you provided a valid repository URL, the initial commit has been pushed."
-  echo "Remember to add it to Private Packagist or Composer will refuse to work: https://packagist.com/orgs/vincit/packages/add"
-
-}
-
-
   esac
 
   case "$activate" in
