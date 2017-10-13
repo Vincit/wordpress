@@ -96,7 +96,8 @@
     "devgeniem/wp-sanitize-accented-uploads": "^1.2",
     "elliotcondon/advanced-custom-fields-pro": "^5.6",
     "mikkosaari/relevanssi-premium": "^1.16",
-    "devgeniem/wp-core-blocker": "^0.3.2",
+    "devgeniem/wp-core-blocker": "^0.3.2",'
+    "rarst/wps": "dev-master",
 
     "wpackagist-theme/twentyseventeen": "*"
   },
