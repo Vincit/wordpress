@@ -1,122 +1,121 @@
 {
-  "name": "vincit/wordpress-project",
-  "type": "project",
-  "license": "GPL-2.0",
-  "description": "Vincit WordPress project",
-  "homepage": "https://vincit.com/",
-  "authors": [
-    {
-      "name": "Antti Kuosmanen",
-      "email": "antti@seravo.fi",
-      "homepage": "https://github.com/anttiviljami"
-    },
-    {
-      "name": "Otto Kekäläinen",
-      "email": "otto@seravo.fi",
-      "homepage": "https://github.com/ottok"
-    },
-    {
-      "name": "Onni Hakala",
-      "email": "onni@seravo.fi",
-      "homepage": "https://github.com/onnimonni"
-    },
-    {
-      "name": "Christian Nikkanen",
-      "email": "christian.nikkanen@vincit.com",
-      "homepage": "https://github.com/k1sul1"
-    }
-  ],
-  "keywords": [
-    "wordpress", "composer", "wp", "wp-palvelu", "seravo"
-  ],
-  "config": {
-    "preferred-install": {
-      "vincit/wordpress-theme-base": "source",
-      "vincit/*": "source",
-      "*": "dist"
-    }
+	"name": "vincit/wordpress-project",
+	"type": "project",
+	"license": "GPL-2.0",
+	"description": "Vincit WordPress project",
+	"homepage": "https://vincit.com/",
+	"authors": [{
+			"name": "Antti Kuosmanen",
+			"email": "antti@seravo.fi",
+			"homepage": "https://github.com/anttiviljami"
+		},
+		{
+			"name": "Otto Kekäläinen",
+			"email": "otto@seravo.fi",
+			"homepage": "https://github.com/ottok"
+		},
+		{
+			"name": "Onni Hakala",
+			"email": "onni@seravo.fi",
+			"homepage": "https://github.com/onnimonni"
+		},
+		{
+			"name": "Christian Nikkanen",
+			"email": "christian.nikkanen@vincit.com",
+			"homepage": "https://github.com/k1sul1"
+		}
+	],
+	"keywords": [
+		"wordpress", "composer", "wp", "wp-palvelu", "seravo"
+	],
+	"config": {
+		"preferred-install": {
+			"vincit/wordpress-theme-base": "source",
+			"vincit/*": "source",
+			"*": "dist"
+		}
 
-  },
-  "autoload": {
-    "psr-0": {"WordPress\\Installer": "scripts"}
-  },
-  "scripts": {
-    "post-install-cmd": [
-      "WordPress\\Installer::symlinkWPContent"
-    ],
-    "post-update-cmd": [
-      "WordPress\\Installer::symlinkWPContent"
-    ]
-  },
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "https://wpackagist.org"
-    },
-    {
-      "type": "composer",
-      "url": "https://wp-languages.github.io"
-    },
-    {
-      "type": "composer",
-      "url": "https://repo.packagist.com/vincit/"
-    }
-  ],
-  "require": {
-    "php": ">=7.0",
-    "johnpbloch/wordpress-core-installer": "^0.2.1",
-    "johnpbloch/wordpress-core": "^4.7",
-    "composer/installers": "v1.0.12",
-    "koodimonni/composer-dropin-installer": ">=0.2.4",
-    "vlucas/phpdotenv": "1.0.9",
+	},
+	"autoload": {
+		"psr-0": {
+			"WordPress\\Installer": "scripts"
+		}
+	},
+	"scripts": {
+		"post-install-cmd": [
+			"WordPress\\Installer::symlinkWPContent"
+		],
+		"post-update-cmd": [
+			"WordPress\\Installer::symlinkWPContent"
+		]
+	},
+	"repositories": [{
+			"type": "composer",
+			"url": "https://wpackagist.org"
+		},
+		{
+			"type": "composer",
+			"url": "https://wp-languages.github.io"
+		},
+		{
+			"type": "composer",
+			"url": "https://repo.packagist.com/vincit/"
+		}
+	],
+	"require": {
+		"php": ">=7.0",
+		"johnpbloch/wordpress-core-installer": "^0.2.1",
+		"johnpbloch/wordpress-core": "^4.7",
+		"composer/installers": "v1.0.12",
+		"koodimonni/composer-dropin-installer": ">=0.2.4",
+		"vlucas/phpdotenv": "1.0.9",
 
-    "koodimonni-language/fi": "*",
-    "koodimonni-language/sv_SE": "*",
+		"koodimonni-language/fi": "*",
+		"koodimonni-language/sv_SE": "*",
 
-    "wpackagist-plugin/user-switching": "^1.0",
-    "wpackagist-plugin/polylang": ">=2.1",
-    "wpackagist-plugin/what-the-file": "^1.5",
-    "wpackagist-plugin/autodescription": "^2.6",
-    "wpackagist-plugin/categories-images": "^2.5",
-    "anttiviljami/wp-libre-form": "^1.0",
-    "wpackagist-plugin/rich-text-tags": "^1.8",
-    "wpackagist-plugin/imsanity": "^2.3",
-    "wpackagist-plugin/adminimize": "^1.10",
-    "wpackagist-plugin/enhanced-media-library": "^2.3",
-    "wpackagist-plugin/global-meta-box-order": "^1.0",
-    "wpackagist-plugin/post-expirator": "^2.1",
-    "wpackagist-plugin/duplicate-post": "^3.0",
-    "wpackagist-plugin/query-monitor": "^2.13",
+		"wpackagist-plugin/user-switching": "^1.0",
+		"wpackagist-plugin/polylang": ">=2.1",
+		"wpackagist-plugin/what-the-file": "^1.5",
+		"wpackagist-plugin/autodescription": "^2.6",
+		"wpackagist-plugin/categories-images": "^2.5",
+		"anttiviljami/wp-libre-form": "^1.0",
+		"wpackagist-plugin/rich-text-tags": "^1.8",
+		"wpackagist-plugin/imsanity": "^2.3",
+		"wpackagist-plugin/adminimize": "^1.10",
+		"wpackagist-plugin/enhanced-media-library": "^2.3",
+		"wpackagist-plugin/global-meta-box-order": "^1.0",
+		"wpackagist-plugin/post-expirator": "^2.1",
+		"wpackagist-plugin/duplicate-post": "^3.0",
+		"wpackagist-plugin/query-monitor": "^2.13",
 
-    "roots/soil": "3.7.0",
-    "aucor/polylang-copy-content": ">=0.1.1",
-    "aucor/dynamic-mo-loader": ">=1.1.1",
-    "aucor/wp_query-route-to-rest-api": ">=1.1.1",
-    "seravo/seravo-plugin": ">=1.4.0",
-    "devgeniem/wp-sanitize-accented-uploads": "^1.2",
-    "elliotcondon/advanced-custom-fields-pro": "^5.6",
-    "mikkosaari/relevanssi-premium": "^1.16",
-    "devgeniem/wp-core-blocker": "^0.3.2",'
+		"roots/soil": "3.7.0",
+		"aucor/polylang-copy-content": ">=0.1.1",
+		"aucor/dynamic-mo-loader": ">=1.1.1",
+		"aucor/wp_query-route-to-rest-api": ">=1.1.1",
+		"seravo/seravo-plugin": ">=1.4.0",
+		"devgeniem/wp-sanitize-accented-uploads": "^1.2",
+		"elliotcondon/advanced-custom-fields-pro": "^5.6",
+		"mikkosaari/relevanssi-premium": "^1.16",
+		"devgeniem/wp-core-blocker": "^0.3.2",
 
-    "wpackagist-theme/twentyseventeen": "*"
-  },
-  "require-dev": {
-    "rarst/wps": "dev-master",
-    "vincit/wordpress": "@dev"
-  },
-  "extra": {
-    "installer-paths": {
-      "htdocs/wp-content/mu-plugins/{$name}/": ["type:wordpress-muplugin", "rarst/wps"],
-      "htdocs/wp-content/plugins/{$name}/": ["type:wordpress-plugin"],
-      "htdocs/wp-content/themes/{$name}": ["type:wordpress-theme"]
-    },
-    "dropin-paths": {
-      "htdocs/wp-content/languages/": ["vendor:koodimonni-language"],
-      "htdocs/wp-content/languages/plugins/": ["vendor:koodimonni-plugin-language"],
-      "htdocs/wp-content/languages/themes/": ["vendor:koodimonni-theme-language"],
-      ".": ["type:seravo-wordpress-dropin"]
-    },
-    "wordpress-install-dir": "htdocs/wordpress"
-  },
-
+		"wpackagist-theme/twentyseventeen": "*"
+	},
+	"require-dev": {
+		"rarst/wps": "dev-master",
+		"vincit/wordpress": "@dev"
+	},
+	"extra": {
+		"installer-paths": {
+			"htdocs/wp-content/mu-plugins/{$name}/": ["type:wordpress-muplugin", "rarst/wps"],
+			"htdocs/wp-content/plugins/{$name}/": ["type:wordpress-plugin"],
+			"htdocs/wp-content/themes/{$name}": ["type:wordpress-theme"]
+		},
+		"dropin-paths": {
+			"htdocs/wp-content/languages/": ["vendor:koodimonni-language"],
+			"htdocs/wp-content/languages/plugins/": ["vendor:koodimonni-plugin-language"],
+			"htdocs/wp-content/languages/themes/": ["vendor:koodimonni-theme-language"],
+			".": ["type:seravo-wordpress-dropin"]
+		},
+		"wordpress-install-dir": "htdocs/wordpress"
+	}
 }
