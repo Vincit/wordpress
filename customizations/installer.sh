@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+cwd=$(pwd)
+
+if [[ $cwd == *"customizations"* ]]; then
+  echo "You're doing it wrong. You should run install.sh from project root, and nothing from customizations folder."
+  exit 1
+fi
+
+
 source customizations/helpers.sh
 source customizations/theme-installer.sh
 
