@@ -1,0 +1,145 @@
+# Bedrock infused WordPress config file for Circle CI 2.0
+
+version: 2
+jobs:
+  build:
+    working_directory: ~/repo
+    docker:
+      # specify the version you desire here
+      - image: circleci/php:7.0-fpm-node-browsers
+        environment:
+          - WP_TEST_URL: "http://localhost:12000"
+          - WP_TEST_USER: "test"
+          - WP_TEST_USER_PASS: "test"
+          - WP_ENV: "ci"
+          - MYSQL_ALLOW_EMPTY_PASSWORD: true,
+          - MYSQL_DATABASE: "circle_test"
+          - MYSQL_HOST: "127.0.0.1"
+          - DB_HOST: "127.0.0.1"
+          - DB_USER: "root"
+          - DB_PASSWORD: ""
+          - DB_NAME: "circle_test"
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      - image: circleci/mysql:latest
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "composer.json" }}
+          - v1-dependencies-{{ checksum "htdocs/wp-content/themes/wordpress-theme-base/package.json" }}
+
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run:
+          name: Preparations
+          command: |
+            sudo apt-get install pv mysql-client sshpass
+            sudo docker-php-ext-install mysqli pdo pdo_mysql # WTF, why aren't these installed already?
+            composer install -n --prefer-dist --no-dev
+
+      - run:
+          name: Build frontend
+          command: |
+            cd htdocs/wp-content/themes/wordpress-theme-base
+            npm install # Builds using prod conf
+
+      - run:
+          name: Install WordPress
+          command: |
+            # set +eo pipefail
+            # set -x
+
+            # Get WP-cli
+            curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+
+            # Install WordPress
+            php wp-cli.phar core install \
+              --url=$WP_TEST_URL \
+              --title='Test' \
+              --admin_user=$WP_TEST_USER \
+              --admin_password=$WP_TEST_USER_PASS \
+              --admin_email="$WP_TEST_USER@wordpress.dev" \
+              --path=htdocs/wordpress
+
+            # Get the database
+            sshpass -e ssh -q -o StrictHostKeyChecking=no USER@TARGET.domain -p 10349 'wp db export - --single-transaction' > database.sql
+            mysql -h 127.0.0.1 -u root -D circle_test < database.sql
+            rm database.sql
+
+            # Activate all plugins
+            php wp-cli.phar plugin activate --all --path=htdocs/wordpress
+
+            # Get alternative router so we can do without Apache or nginx
+            cd ~/repo
+            curl -s https://raw.githubusercontent.com/Seravo/wordpress-test-template/master/lib/router.php > htdocs/router.php
+            cd htdocs
+            ls
+
+            php -S 0.0.0.0:8080 router.php &
+            sleep 2; # This randomly fixed issue with not being able to connect
+            curl -i http://localhost:8080
+
+      - run:
+          name: Deploy
+          command: |
+            # Handle restarting nginx and so on...
+            if [ $CIRCLE_BRANCH == 'master' ]; then
+              sshpass -e rsync -av --progress --exclude='node_modules' --delete --exclude='*/wp-content/uploads/*' -e 'ssh -T -o Compression=no -o StrictHostKeyChecking=no -p 10349' ~/repo/ USER@TARGET.domain:/data/wordpress
+            fi
+
+            if [ $CIRCLE_BRANCH == 'production' ]; then
+              sshpass -e rsync -av --progress --exclude='node_modules' --delete --exclude='*/wp-content/uploads/*' -e 'ssh -T -o Compression=no -o StrictHostKeyChecking=no -p 10298' ~/repo/ USER@TARGET.domain:/data/wordpress
+            fi
+
+      # - run: # Say no to ruby, try Puppeteer
+          # name: RSpec
+          # command: |
+            # bundle install --gemfile=~/repo/tests/rspec/Gemfile
+            # cd ~/repo/tests/rspec
+            # bundle exec rspec *.rb
+
+
+      - save_cache:
+          key: v1-dependencies-{{ checksum "composer.json" }}
+          paths:
+            - ./vendor
+
+      - save_cache:
+          key: v1-dependencies-{{ checksum "htdocs/wp-content/themes/wordpress-theme-base/package.json" }}
+          paths:
+            - /home/circleci/repo/htdocs/wp-content/themes/wordpress-theme-base/node_modules
+
+  # What's the point of running a separate job for this? Deploy will fail if the build fails.
+  # This is just much slower. So let's not use it, for now.
+
+  # deploy:
+    # working_directory: ~/repo
+    # docker:
+      # - image: circleci/php:7.0-fpm-node-browsers
+      # - image: circleci/mysql:latest
+
+    # steps:
+      # - run:
+          # name: Deploy to staging
+          # command: |
+            # sudo apt-get install sshpass
+            # sshpass -e scp -r -P 10349 USER@TARGET.domain:/data/wordpress ~/repo
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      # - deploy:
+          # requires:
+            # - build
+          # filters:
+            # branches:
+              # only: master
