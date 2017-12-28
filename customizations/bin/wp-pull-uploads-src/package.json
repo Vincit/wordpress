@@ -1,0 +1,16 @@
+{
+  "name": "wp-pull-uploads-src",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "node index.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "node-yaml": "^3.1.1",
+    "rsync": "^0.6.1"
+  }
+}

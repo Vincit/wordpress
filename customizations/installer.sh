@@ -24,6 +24,11 @@ conquer() {
   echo
 }
 
+add_scripts() {
+  echo "Adding /data/wordpress/customizations/bin to PATH"
+  run /data/wordpress/customizations/path-add.sh
+}
+
 backup() {
   echo "Enabling backups of the database..."
   run /data/wordpress/customizations/vagrant-cron.sh &> /dev/null # It never fails, stop whining about "no crontab for vagrant"
@@ -119,8 +124,8 @@ ignore() {
 tune_hooks() {
   echo "Moving pre-commit hook that runs *slow* rspec tests to pre-push..."
   mv .git/hooks/pre-commit .git/hooks/pre-push
-  echo 
-  
+  echo
+
 }
 
 install() {
@@ -135,7 +140,7 @@ installer() {
   # Run full installer if this file doesn't exist.
 
   if [ ! -f .vincit.d ]; then
-    install "conquer" "backup" "composertask" "plugins" "prompt_theme_installer" "admin" "ignore" "tune_hooks"
+    install "conquer" "add_scripts" "backup" "composertask" "plugins" "prompt_theme_installer" "admin" "ignore" "tune_hooks"
     touch .vincit.d
   else
     # Run these tasks every time
