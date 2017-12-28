@@ -110,6 +110,11 @@ ignore() {
     echo /customizations >> .gitignore
   fi
 
+  if ! grep --quiet "!/customizations/bin" <<< "$gitignore"; then
+    echo "Un-ignoring /customizations/bin (you retain your scripts)"
+    echo !/customizations/bin >> .gitignore
+  fi
+
   if ! grep --quiet "/install.sh" <<< "$gitignore"; then
     echo "Ignoring /install.sh (managed by Composer)"
     echo /install.sh >> .gitignore
