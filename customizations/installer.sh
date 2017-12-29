@@ -54,7 +54,7 @@ replace_readme() {
   git add README.md
   git commit -m "[auto] Replace README"
 
-  git stash apply # bring the changes back
+  git stash pop # bring the changes back
 }
 
 composertask() {
