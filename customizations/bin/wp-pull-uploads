@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-cd wp-pull-uploads-src || exit 1
+cd /data/wordpress/customizations/bin/wp-pull-uploads-src || exit 1
 npm install --silent # runs postinstall task
