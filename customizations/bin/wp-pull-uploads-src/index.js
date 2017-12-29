@@ -4,7 +4,7 @@ const yaml = require('node-yaml');
 const config = yaml.readSync(path.join('/data/wordpress/config.yml'));
 
 const target = process.argv[2] || config.production
-const user = target.user || 'circleci'
+const user = target.user || config.name
 const uploadDir = target.uploadDir || '/data/wordpress/htdocs/wp-content/uploads/'
 
 if (target) {
