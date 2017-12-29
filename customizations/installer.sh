@@ -40,8 +40,21 @@ backup() {
 }
 
 replace_readme() {
+  if git log | grep --quiet '\[auto\] Replace README'; then
+    echo "README has been replaced already, skipping task..."
+    return
+  fi
+
+  echo "Replacing README..."
+
+  git stash # Save any changes for now
+
   rm README.md
   cp customizations/README-sample.md README.md
+  git add README.md
+  git commit -m "[auto] Replace README"
+
+  git stash apply # bring the changes back
 }
 
 composertask() {
