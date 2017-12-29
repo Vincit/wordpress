@@ -47,14 +47,18 @@ replace_readme() {
 
   echo "Replacing README..."
 
+  OLDCOUNT=$(git stash list | wc -l)
   git stash # Save any changes for now
+  NEWCOUNT=$(git stash list | wc -l)
 
   rm README.md
   cp customizations/README-sample.md README.md
   git add README.md
   git commit -m "[auto] Replace README"
 
-  git stash pop # bring the changes back
+  if [ "$NEWCOUNT" -gt "$OLDCOUNT" ]; then
+    git stash pop # bring the changes back
+  fi
 }
 
 composertask() {
