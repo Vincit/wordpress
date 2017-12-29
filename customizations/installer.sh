@@ -39,6 +39,11 @@ backup() {
   echo
 }
 
+replace_readme() {
+  rm README.md
+  cp customizations/README-sample.md README.md
+}
+
 composertask() {
   if ! grep --quiet "seravo/wordpress" composer.json; then
     echo "composer.json didn't contain seravo/wordpress, skipping task."
@@ -145,7 +150,7 @@ installer() {
   # Run full installer if this file doesn't exist.
 
   if [ ! -f .vincit.d ]; then
-    install "conquer" "add_scripts" "backup" "composertask" "plugins" "prompt_theme_installer" "admin" "ignore" "tune_hooks"
+    install "conquer" "replace_readme" "add_scripts" "backup" "composertask" "plugins" "prompt_theme_installer" "admin" "ignore" "tune_hooks"
     touch .vincit.d
   else
     # Run these tasks every time

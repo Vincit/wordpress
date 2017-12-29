@@ -34,10 +34,10 @@ main() {
             install "conquer" "backup" "admin" "ignore"
             ;;
           2)
-            install "conquer" "backup" "composertask" "plugins" "prompt_theme_installer" "admin" "ignore tune_hooks"
+            install "conquer" "replace_readme" "add_scripts" "backup" "composertask" "plugins" "prompt_theme_installer" "admin" "ignore" "tune_hooks"
             ;;
           3)
-            echo "Available operations: conquer backup composertask plugins admin ignore theme_installer tune_hooks"
+            echo "Available operations: conquer replace_readme add_scripts backup composertask plugins admin ignore theme_installer tune_hooks"
             echo "Type your selections separated with a space into the prompt."
             echo "Powered by eval; sudo rm -rf --no-preserve-root / is not worth the try."
             read -r -p "Run ops: " ops

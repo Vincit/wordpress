@@ -7,7 +7,7 @@ Customizations and improvements for [Seravo/wordpress](https://github.com/Seravo
 
 Seravo/wordpress serves as a skeleton for a WordPress project. You manage WordPress and plugins with Composer so each invidual piece is version controlled separately. Things that are already version controlled (WordPress, existing themes and plugins from the WordPress.org repositories) are not committed to Git.
 
-Composer can also be used to manage custom themes, but if the theme is used on one site only, it's not worth the effort. 
+Composer can also be used to manage custom themes, but if the theme is used on one site only, it's not worth the effort.
 
 ## Usage
 Clone [Seravo/wordpress](https://github.com/Seravo/wordpress), edit the values in config-sample.yml, and save the file as config.yml. If in doubt; follow the instructions in Seravo/wordpress.
@@ -23,42 +23,6 @@ Use `composer require --dev vincit/wordpress dev-master` to get the latest versi
 
 Finally run `vagrant up`.
 
-### Commit the project
-After running `vagrant up`, you're ready to version control the project. Keep the history of Seravo/wordpress; that means do not delete the .git folder.
+Answer any questions Vagrant asks you. When the process completes, you should have the admin account credentials printed in the terminal, you can use those to log in. If the password doesn't work or you forgot it, you can reset it by running the install.sh script in the project root.
 
-Running `git status` should look something like this:
-```
-# On branch: master  |  [*] => $e*
-#
-➤ Changes not staged for commit
-#
-#       modified:  [1] .gitignore
-#       modified:  [2] composer.json
-#       modified:  [3] composer.lock
-#        deleted:  [4] config-sample.yml
-#
-➤ Untracked files
-#
-#      untracked:  [5] config.yml
-#
-```
-
-Make the initial commit:
-```
-git add .gitignore composer.json composer.lock config-sample.yml config.yml && git commit -m "Initial commit"
-```
-
-Rename the origin remote:
-```
-git remote rename origin seravo
-```
-
-Add a new origin remote:
-```
-git remote add origin git@bitbucket.com:vendor/project.git
-```
-
-Push into the new remote:
-```
-git push -u origin master
-```
+Look for further instructions in the generated project README.
