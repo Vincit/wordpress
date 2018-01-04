@@ -6,7 +6,8 @@ jobs:
     working_directory: ~/repo
     docker:
       # specify the version you desire here
-      - image: circleci/php:7.0-fpm-node-browsers
+      # - image: circleci/php:7.0-fpm-node-browsers
+      - image: k1sul1/circleci-wordpress
         environment:
           - WP_TEST_URL: "http://localhost:12000"
           - WP_TEST_USER: "test"
@@ -40,8 +41,8 @@ jobs:
       - run:
           name: Preparations
           command: |
-            sudo apt-get install pv mysql-client sshpass
-            sudo docker-php-ext-install mysqli pdo pdo_mysql # WTF, why aren't these installed already?
+            # sudo apt-get install pv mysql-client sshpass
+            # sudo docker-php-ext-install mysqli pdo pdo_mysql # WTF, why aren't these installed already?
             composer install -n --prefer-dist --no-dev
 
       - run:
