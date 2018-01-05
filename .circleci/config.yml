@@ -7,7 +7,7 @@ jobs:
     docker:
       # specify the version you desire here
       # - image: circleci/php:7.0-fpm-node-browsers
-      - image: k1sul1/circleci-wordpress
+      - image: k1sul1/circleci-wordpress:0.0.1
         environment:
           - WP_TEST_URL: "http://localhost:12000"
           - WP_TEST_USER: "test"
