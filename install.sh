@@ -12,6 +12,7 @@ main() {
   echo -e " │    2   Create a new theme                │"
   echo -e " │    3   Create a new plugin               │"
   echo -e " │    4   Reset admin password              │"
+  echo -e " │    5   Switch to sample database         │"
   echo -e " │    9   Show logo                         │"
   echo -e " │    0   Exit                              │"
   echo -e " └──────────────────────────────────────────┘"
@@ -68,6 +69,23 @@ main() {
       password=$(openssl rand -base64 32 2> /dev/null | head -c32)
       run "wp user update 'vincit.admin' --user_pass='$password' > /dev/null 2>&1"
       echo "The new password is: $password"
+      read -r -s -n1
+      ;;
+    5)
+      echo
+      echo "Saving current database to /data/wordpress/pre-sample-db.sql"
+      run "wp db export /data/wordpress/pre-sample-db.sql"
+
+      siteurl=$(run "wp option get siteurl")
+
+      echo "Importing sample database..."
+      run "wp db reset --yes"
+      run "wp db import /data/wordpress/customizations/base.sql"
+
+      echo "Replacing https://wordpress.local with $siteurl"
+      run "wp search-replace --all-tables https://wordpress.local $siteurl"
+
+      echo "Import done."
       read -r -s -n1
       ;;
     9)
