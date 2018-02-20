@@ -1,0 +1,29 @@
+{
+  "name": "customizations",
+  "version": "1.0.0",
+  "description": "",
+  "main": "init.js",
+  "scripts": {
+    "test": "eslint js/ --cache",
+    "prepush": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Vincit/wordpress.git%20.git"
+  },
+  "author": "Christian Nikkanen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Vincit/wordpress.git%20/issues"
+  },
+  "homepage": "https://github.com/Vincit/wordpress.git%20#readme",
+  "dependencies": {
+    "chalk": "^2.3.1",
+    "commander": "^2.14.1",
+    "eslint": "^4.15.0",
+    "eslint-config-airbnb": "^16.0",
+    "eslint-plugin-promise": "^3.6.0",
+    "inquirer": "^5.1.0",
+    "node-yaml": "^3.1.1"
+  }
+}
