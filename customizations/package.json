@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Vincit/wordpress.git%20#readme",
   "dependencies": {
     "chalk": "^2.3.1",
+    "clear": "0.0.1",
     "commander": "^2.14.1",
     "eslint": "^4.15.0",
     "eslint-config-airbnb": "^16.0",

@@ -3,6 +3,7 @@ const inquirer = require('inquirer')
 const path = require('path')
 const chalk = require('chalk')
 const yaml = require('node-yaml')
+const clear = require('clear')
 const log = console.log
 const { readFile } = require('./js/helpers')
 
@@ -43,17 +44,44 @@ async function autorun(config = {}) {
   log(config)
 
   try {
-    themeInstaller(config.development.domains[0])
+    themeInstaller(config)
   } catch(e) {
     console.error(e)
   }
 }
 
 async function manual(config = {}) {
-  log('test')
+  const ops = {
+    autorun,
+    themeInstaller,
+    resetPassword: () => 'kissa666\n\n\n',
+  }
+
+  const { task } = await inquirer.prompt([
+    questions.taskSelect,
+  ])
+
+  if (ops[task]) {
+    const result = await ops[task](config)
+    console.log(result)
+
+    const { doMore } = await inquirer.prompt([
+      questions.doMore,
+    ])
+
+    if (doMore) {
+      clear()
+      manual(config)
+    } else {
+      process.exit(0)
+    }
+  }
+
+  console.log(task)
 }
 
-async function themeInstaller(url) {
+async function themeInstaller(config) {
+  const url = config.development.domains[0]
   const answers = await inquirer.prompt([
     questions.theme.install,
     questions.theme.name,
