@@ -47,7 +47,7 @@ async function themeInstaller(config) {
       await rename(oldPath, newPath)
 
       log(chalk.yellow(`Replacing strings`))
-      log(chalk.yellow(`Replacing wordpress-theme-base`))
+      log(chalk.yellow(`Replacing wordpress-theme-base with ${themeDirName}`))
       replace({
         regex: 'wordpress-theme-base',
         replacement: themeDirName,
@@ -55,7 +55,7 @@ async function themeInstaller(config) {
         recursive: true,
         silent: false,
       })
-      log(chalk.yellow(`Replacing WordPress theme base`))
+      log(chalk.yellow(`Replacing WordPress theme base with ${answers.themeName}`))
       replace({
         regex: 'WordPress theme base',
         replacement: answers.themeName,
@@ -63,7 +63,7 @@ async function themeInstaller(config) {
         recursive: true,
         silent: false,
       })
-      log(chalk.yellow(`Replacing wordpress.local`))
+      log(chalk.yellow(`Replacing wordpress.local with ${answers.changeURL}`))
       replace({
         regex: 'wordpress.local',
         replacement: answers.changeURL,
@@ -93,7 +93,6 @@ async function themeInstaller(config) {
       if (answers.activate) {
         if (isDropIn) {
           log(await runInVagrant(`wp theme activate ${themeDirName}`))
-          )
         } else {
           log(chalk.yellow('Skipping activation, Vagrant not detected'))
         }
