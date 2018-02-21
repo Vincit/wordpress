@@ -34,7 +34,7 @@ development:
     .option('--autorun', 'Automatic task runner meant to be used by vagrant-up-customizer.sh')
     .parse(process.argv)
 
-  log(chalk.yellow(await readFile(logoPath)))
+  log(chalk.redBright(await readFile(logoPath)))
   if (program.autorun) {
     autorun(config)
   } else {
