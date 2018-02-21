@@ -2,7 +2,7 @@ const chalk = require('chalk')
 const fs = require('fs')
 const path = require('path')
 const { spawn } = require('child_process')
-const password = require('generate-password')
+const passwordgenerator = require('generate-password')
 const replace = require('node-replace')
 
 function readFile(pathToFile) {
@@ -64,7 +64,7 @@ async function runInVagrant(command) {
 }
 
 function password() {
-  return password.generate({ length: 32, numbers: true, excludeSimilarChars: true })
+  return passwordgenerator.generate({ length: 32, numbers: true, excludeSimilarChars: true })
 }
 
 module.exports = {
