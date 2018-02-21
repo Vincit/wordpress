@@ -9,10 +9,24 @@ function readFile(pathToFile) {
   return new Promise((resolve, reject) => {
     fs.readFile(pathToFile, (err, data) => {
       if (err) {
-        return reject(err)
+        reject(err)
+        return
       }
 
-      return resolve(data.toString())
+      resolve(data.toString())
+    })
+  })
+}
+
+function writeFile(pathToFile, data) {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(pathToFile, data, err => {
+      if (err) {
+        reject(err)
+        return
+      }
+
+      resolve(true)
     })
   })
 }
@@ -27,6 +41,7 @@ function streamCommand(command, args = [], options = {}) {
     cmd.on('close', code => {
       if (code !== 0) {
         reject(`${command} ${args.join(' ')} exited with exit code ${code}`)
+        return
       }
 
       resolve()
@@ -39,6 +54,7 @@ function isInstalledAsDropIn() {
     fs.access(path.join(__dirname, '..', '..', 'htdocs'), null, err => {
       if (err) {
         resolve(false)
+        return
       }
 
       resolve(true)
@@ -69,6 +85,7 @@ function password() {
 
 module.exports = {
   readFile,
+  writeFile,
   streamCommand,
   isInstalledAsDropIn,
   rename,

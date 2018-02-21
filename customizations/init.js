@@ -5,7 +5,7 @@ const chalk = require('chalk')
 const yaml = require('node-yaml')
 const clear = require('clear')
 const log = console.log
-const { readFile } = require('./js/helpers')
+const { readFile, writeFile } = require('./js/helpers')
 const tasks = require('./js/tasks')
 const questions = require('./js/questions')
 
@@ -15,7 +15,6 @@ const { themeInstaller } = tasks
 main()
 
 async function main() {
-
   const configYaml = await readFile(path.join(__dirname, '../config.yml'))
     .catch(e => {
 
@@ -29,6 +28,13 @@ development:
 `
     })
   const config = yaml.parse(configYaml)
+  const storage = await readFile('./storage.json').catch(e => {
+    log(chalk.red(e))
+
+    return {
+      initialRunDone: false,
+    }
+  })
 
   program
     .option('--autorun', 'Automatic task runner meant to be used by vagrant-up-customizer.sh')
@@ -36,23 +42,27 @@ development:
 
   log(chalk.redBright(await readFile(logoPath)))
   if (program.autorun) {
-    autorun(config)
+    autorun(config, storage)
   } else {
-    manual(config)
+    manual(config, storage)
   }
 }
 
-async function autorun(config = {}) {
-  log(config)
-
+async function autorun(config = {}, storage = {}) {
   try {
-    themeInstaller(config)
+    if (!storage.initialRunDone) {
+      await themeInstaller(config)
+
+      storage.initialRunDone = true
+      await writeFile('./storage.json', JSON.stringify(storage))
+      process.exit(0)
+    }
   } catch(e) {
     console.error(e)
   }
 }
 
-async function manual(config = {}) {
+async function manual(config = {}, storage = {}) {
   const ops = {
     autorun,
     ...tasks,
