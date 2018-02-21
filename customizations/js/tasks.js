@@ -92,9 +92,7 @@ async function themeInstaller(config) {
 
       if (answers.activate) {
         if (isDropIn) {
-          log(await runInVagrant(`wp theme activate ${themeDirName}`)
-            ? chalk.green('Theme activated.')
-            : chalk.red('Failed to activate theme')
+          log(await runInVagrant(`wp theme activate ${themeDirName}`))
           )
         } else {
           log(chalk.yellow('Skipping activation, Vagrant not detected'))

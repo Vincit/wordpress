@@ -3,7 +3,6 @@ const fs = require('fs')
 const path = require('path')
 const { spawn } = require('child_process')
 const replace = require('node-replace')
-// const log = console.log
 
 function readFile(pathToFile) {
   return new Promise((resolve, reject) => {
@@ -24,16 +23,6 @@ function streamCommand(command, args = [], options = {}) {
       ...options,
     })
 
-    // console.log(cmd.stdout, cmd.stderr, cmd)
-
-    /* cmd.stdout.on('data', data => {
-      log(data)
-    })
-
-    cmd.stderr.on('data', data => {
-      console.error(chalk.red(data))
-    }) */
-
     cmd.on('close', code => {
       if (code !== 0) {
         reject(`${command} ${args.join(' ')} exited with exit code ${code}`)
@@ -45,7 +34,6 @@ function streamCommand(command, args = [], options = {}) {
 }
 
 function isInstalledAsDropIn() {
-  const fpath = path.join(__dirname, '..', '..', 'vagrant-up-customizer.sh')
   return new Promise((resolve) => {
     fs.access(path.join(__dirname, '..', '..', 'htdocs'), null, err => {
       if (err) {
