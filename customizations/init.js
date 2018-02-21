@@ -32,7 +32,12 @@ development:
     log(chalk.red(e))
 
     return {
-      initialRunDone: false,
+      promptedToInstallTheme: false,
+      readmeReplaced: false,
+      composerJsonReplaced: false,
+      gitignoreTweaked: false,
+      pluginsEnabled: false,
+      adminTweaked: false,
     }
   })
 
@@ -50,13 +55,38 @@ development:
 
 async function autorun(config = {}, storage = {}) {
   try {
-    if (!storage.initialRunDone) {
-      await themeInstaller(config)
+    // await conquer()
+    // await enableBackups()
+    // await changeGitHooks()
 
-      storage.initialRunDone = true
-      await writeFile('./storage.json', JSON.stringify(storage))
-      process.exit(0)
+    if (!storage.composerJsonReplaced) {
+      await replaceComposerJson()
     }
+
+    if (!storage.gitignoreTweaked) {
+      await tweakGitignore()
+    }
+
+    if (!storage.pluginsEnabled) {
+      await enablePlugins()
+    }
+
+    if (!storage.adminTweaked) {
+      await tweakAdmin()
+    }
+
+    if (!storage.promptedToInstallTheme) {
+      await themeInstaller(config)
+      storage.promptedToInstallTheme = true
+    }
+
+    if (!storage.readmeReplaced) {
+      await replaceREADME()
+    }
+
+
+    await writeFile('./storage.json', JSON.stringify(storage))
+    process.exit(0)
   } catch(e) {
     console.error(e)
   }
