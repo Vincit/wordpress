@@ -1,5 +1,7 @@
 #!/bin/bash
 
 if [ -f ./customizations/init.js ]; then
-    node ./customizations/init.js --autorun
+    cd customizations
+    npm install
+    node ./init.js --autorun
 fi

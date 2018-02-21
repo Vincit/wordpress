@@ -21,47 +21,49 @@ async function themeInstaller(config) {
     return q
   }))
 
-  log(answers)
-
   if(answers.installBaseTheme) {
     log(chalk.yellow('Installing base theme: composer require vincit/wordpress-theme-base dev-master --prefer-source'))
 
     try {
       const isDropIn = await isInstalledAsDropIn()
-      const dirname = answers.themeName.replace(/\W/g, '') // Strip non alphanumeric
-      console.log('dropin', isDropIn, dirname)
-
-      await streamCommand('composer', 'require vincit/wordpress-theme-base dev-master --prefer-source'.split(' '))
-
-      log(chalk.yellow(`Renaming base theme directory to ${dirname}`))
-      const themePath = isDropIn ? path.join(__dirname, '..', '..', 'htdocs/wp-content/themes/') : (
-        path.join(__dirname, '..', '..', 'vendor')
+      const themeDirName = answers.themeName.replace(/\W/g, '') // Strip non alphanumeric
+      const rootDir = path.join(__dirname, '..', '..')
+      const themePath = isDropIn ? path.join(rootDir, 'htdocs/wp-content/themes/') : (
+        path.join(rootDir, 'vendor')
       )
       const oldPath = isDropIn ? path.join(themePath, 'wordpress-theme-base') : (
         path.join(themePath, 'vincit/wordpress-theme-base')
       )
-      const newPath = isDropIn ? path.join(themePath, dirname) : (
-        path.join(themePath, `vincit/${dirname}`)
+      const newPath = isDropIn ? path.join(themePath, themeDirName) : (
+        path.join(themePath, `vincit/${themeDirName}`)
       )
-      const cmdOpts = { cwd: newPath }
+      const rootCmdOpts = { cwd: rootDir }
+      const themeCmdOpts = { cwd: newPath }
+
+      await streamCommand('composer', 'require vincit/wordpress-theme-base dev-master --prefer-source'.split(' '), rootCmdOpts)
+
+      log(chalk.yellow(`Renaming base theme directory to ${themeDirName}`))
 
       await rename(oldPath, newPath)
 
       log(chalk.yellow(`Replacing strings`))
+      log(chalk.yellow(`Replacing wordpress-theme-base`))
       replace({
         regex: 'wordpress-theme-base',
-        replacement: dirname,
+        replacement: themeDirName,
         paths: [newPath],
         recursive: true,
         silent: false,
       })
+      log(chalk.yellow(`Replacing WordPress theme base`))
       replace({
-        regex: 'WordPress Theme Base',
+        regex: 'WordPress theme base',
         replacement: answers.themeName,
         paths: [newPath],
         recursive: true,
         silent: false,
       })
+      log(chalk.yellow(`Replacing wordpress.local`))
       replace({
         regex: 'wordpress.local',
         replacement: answers.changeURL,
@@ -70,29 +72,27 @@ async function themeInstaller(config) {
         silent: false,
       })
 
-      console.log(cmdOpts)
-
       if (answers.trackInGit) {
         log(chalk.yellow('Creating the initial commit'))
-        await streamCommand('git', `remote remove origin`.split(' '), cmdOpts)
-        await streamCommand('git', `remote add origin ${answers.gitURL}`.split(' '), cmdOpts)
-        await streamCommand('git', `add .`.split(' '), cmdOpts)
-        await streamCommand('git', `commit -m "Initial commit"`.split(' '), cmdOpts)
-        await streamCommand('git', `push -u origin master`.split(' '), cmdOpts)
+        await streamCommand('git', `remote remove origin`.split(' '), themeCmdOpts)
+        await streamCommand('git', `remote add origin ${answers.gitURL}`.split(' '), themeCmdOpts)
+        await streamCommand('git', `add .`.split(' '), themeCmdOpts)
+        await streamCommand('git', `commit -m "Initial commit"`.split(' '), themeCmdOpts)
+        await streamCommand('git', `push -u origin master`.split(' '), themeCmdOpts)
       } else if (isDropIn) {
-        await streamCommand('rm', `-rf .git`.split(' '), cmdOpts)
+        await streamCommand('rm', `-rf .git`.split(' '), themeCmdOpts)
       }
 
       log(chalk.yellow('Installing dependencies and building the theme'))
-      await streamCommand('npm', ['install'], cmdOpts)
-      await streamCommand('composer', ['install'], cmdOpts)
+      await streamCommand('npm', ['install'], themeCmdOpts)
+      await streamCommand('composer', ['install'], themeCmdOpts)
 
       log(chalk.yellow('Removing vincit/wordpress-theme-base so it isn\'t installed again'))
-      await streamCommand('composer', 'remove vincit/wordpress-theme-base'.split(' '))
+      await streamCommand('composer', 'remove vincit/wordpress-theme-base'.split(' '), rootCmdOpts)
 
       if (answers.activate) {
         if (isDropIn) {
-          log(runInVagrant(`wp theme activate ${dirname}`)
+          log(await runInVagrant(`wp theme activate ${themeDirName}`)
             ? chalk.green('Theme activated.')
             : chalk.red('Failed to activate theme')
           )

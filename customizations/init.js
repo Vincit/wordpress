@@ -16,7 +16,7 @@ main()
 
 async function main() {
 
-  const configYaml = await readFile(path.join(__dirname, 'config.yml'))
+  const configYaml = await readFile(path.join(__dirname, '../config.yml'))
     .catch(e => {
 
       log(chalk.red('config.yaml not found, is vincit/wordpress installed correctly?'))
