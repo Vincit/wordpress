@@ -24,8 +24,14 @@
     "eslint": "^4.15.0",
     "eslint-config-airbnb": "^16.0",
     "eslint-plugin-promise": "^3.6.0",
+    "generate-password": "^1.4.0",
     "inquirer": "^5.1.0",
     "node-replace": "^0.3.3",
     "node-yaml": "^3.1.1"
+  },
+  "devDependencies": {
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0"
   }
 }

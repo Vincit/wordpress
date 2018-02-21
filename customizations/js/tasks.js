@@ -3,7 +3,7 @@ const inquirer = require('inquirer')
 const chalk = require('chalk')
 const log = console.log
 const questions = require('./questions')
-const { streamCommand, isInstalledAsDropIn, rename, replace, runInVagrant } = require('./helpers')
+const { streamCommand, isInstalledAsDropIn, rename, replace, runInVagrant, password } = require('./helpers')
 
 async function themeInstaller(config) {
   const url = config.development.domains[0]
@@ -108,7 +108,13 @@ async function themeInstaller(config) {
 }
 
 async function resetPassword() {
-  return 'kissa666\n\n\n'
+  const pass = password()
+  log(chalk.yellow('Resetting password of vincit.admin'))
+  await runInVagrant(`wp user update 'vincit.admin' --user-pass='${pass}' > /dev/null 2>&1`).catch(e => {
+    log(chalk.red(e))
+  })
+
+  return `\n\n${pass}\n\n`
 }
 
 module.exports = {

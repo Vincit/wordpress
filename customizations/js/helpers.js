@@ -2,6 +2,7 @@ const chalk = require('chalk')
 const fs = require('fs')
 const path = require('path')
 const { spawn } = require('child_process')
+const password = require('generate-password')
 const replace = require('node-replace')
 
 function readFile(pathToFile) {
@@ -62,6 +63,10 @@ async function runInVagrant(command) {
   return await streamCommand('vagrant', `ssh -- -q -t ${command}`.split(' '))
 }
 
+function password() {
+  return password.generate({ length: 32, numbers: true, excludeSimilarChars: true })
+}
+
 module.exports = {
   readFile,
   streamCommand,
@@ -69,4 +74,5 @@ module.exports = {
   rename,
   replace,
   runInVagrant,
+  password,
 }
