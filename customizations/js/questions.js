@@ -32,12 +32,13 @@ const questions = {
       type: 'confirm',
       name: 'installBaseTheme',
       message: 'Would you like to install the base theme?',
-      default: 'n',
+      default: false,
     },
     name: {
       type: 'input',
       name: 'themeName',
       message: `What is the ${chalk.strikethrough("baby's")} theme name?`,
+      validate: (value) => value.length ? true : 'You can figure a name out.',
       when: themeShow,
     },
     correctURL: (url = 'https://wordpress.local') => ({
@@ -50,14 +51,22 @@ const questions = {
       type: 'input',
       name: 'changeURL',
       message: 'What is WP URL?',
+      validate: (value) => value.indexOf('://') === -1 ? true : 'Leave the protocol out.',
       when: (answers) => answers.correctURL === false,
     },
     trackInGit: {
       type: 'confirm',
       name: 'trackInGit',
       message: 'Would you like to track it in Git?',
-      default: 'n',
+      default: false,
       when: themeShow,
+    },
+    gitURL: {
+      type: 'input',
+      name: 'gitURL',
+      message: 'What is the repository URL? Use git@bitbucket... style URLs.',
+      validate: (value) => value.indexOf('@') === -1 ? 'That doesn\'t look right' : true,
+      when: (answers) => answers.trackInGit === true,
     },
     activate: {
       type: 'confirm',

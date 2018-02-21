@@ -6,9 +6,11 @@ const yaml = require('node-yaml')
 const clear = require('clear')
 const log = console.log
 const { readFile } = require('./js/helpers')
+const tasks = require('./js/tasks')
+const questions = require('./js/questions')
 
 const logoPath = path.join(__dirname, 'logo.txt')
-const questions = require('./js/questions')
+const { themeInstaller } = tasks
 
 main()
 
@@ -53,17 +55,16 @@ async function autorun(config = {}) {
 async function manual(config = {}) {
   const ops = {
     autorun,
-    themeInstaller,
-    resetPassword: () => 'kissa666\n\n\n',
+    ...tasks,
   }
 
   const { task } = await inquirer.prompt([
     questions.taskSelect,
   ])
 
-  if (ops[task]) {
+  if (ops[task] && typeof ops[task] === 'function') {
     const result = await ops[task](config)
-    console.log(result)
+    log(result)
 
     const { doMore } = await inquirer.prompt([
       questions.doMore,
@@ -76,20 +77,5 @@ async function manual(config = {}) {
       process.exit(0)
     }
   }
-
-  console.log(task)
 }
 
-async function themeInstaller(config) {
-  const url = config.development.domains[0]
-  const answers = await inquirer.prompt([
-    questions.theme.install,
-    questions.theme.name,
-    questions.theme.correctURL(url),
-    questions.theme.changeURL,
-    questions.theme.trackInGit,
-    questions.theme.activate,
-  ])
-
-  log(answers)
-}

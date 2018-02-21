@@ -25,6 +25,7 @@
     "eslint-config-airbnb": "^16.0",
     "eslint-plugin-promise": "^3.6.0",
     "inquirer": "^5.1.0",
+    "node-replace": "^0.3.3",
     "node-yaml": "^3.1.1"
   }
 }
