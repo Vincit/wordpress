@@ -5,12 +5,23 @@ const chalk = require('chalk')
 const yaml = require('node-yaml')
 const clear = require('clear')
 const log = console.log
-const { readFile, writeFile } = require('./js/helpers')
+const { readFile, writeFile, isInstalledAsDropIn } = require('./js/helpers')
 const tasks = require('./js/tasks')
 const questions = require('./js/questions')
 
 const logoPath = path.join(__dirname, 'logo.txt')
-const { themeInstaller } = tasks
+const {
+  themeInstaller,
+  resetPassword,
+  conquer,
+  enableBackups,
+  changeGitHooks,
+  replaceComposerJson,
+  replaceGitIgnore,
+  enablePlugins,
+  tweakAdmin,
+  replaceREADME,
+ } = tasks
 
 main()
 
@@ -28,7 +39,7 @@ development:
 `
     })
   const config = yaml.parse(configYaml)
-  const storage = await readFile('./storage.json').catch(e => {
+  const storage = await readFile('./autorun.json').catch(e => {
     log(chalk.red(e))
 
     return {
@@ -40,6 +51,8 @@ development:
       adminTweaked: false,
     }
   })
+
+  config.isDropIn = await isInstalledAsDropIn()
 
   program
     .option('--autorun', 'Automatic task runner meant to be used by vagrant-up-customizer.sh')
@@ -55,37 +68,52 @@ development:
 
 async function autorun(config = {}, storage = {}) {
   try {
-    // await conquer()
-    // await enableBackups()
-    // await changeGitHooks()
+    log(await conquer() + '\n')
 
-    if (!storage.composerJsonReplaced) {
-      await replaceComposerJson()
+    if (config.isDropIn) {
+      if (!storage.promptedToInstallTheme) {
+        if (await themeInstaller(config)) {
+          storage.promptedToInstallTheme = true
+        }
+      }
+
+      await enableBackups()
+      await changeGitHooks()
+
+      if (!storage.composerJsonReplaced) {
+        if (await replaceComposerJson()) {
+          storage.composerJsonReplaced = true
+        }
+      }
+
+      if (!storage.gitignoreTweaked) {
+        if (await replaceGitIgnore()) {
+          storage.gitignoreTweaked = true
+        }
+      }
+
+      if (!storage.pluginsEnabled) {
+        if (await enablePlugins()) {
+          storage.pluginsEnabled = true
+        }
+      }
+
+      if (!storage.readmeReplaced) {
+        if (await replaceREADME()) {
+          storage.readmeReplaced = true
+        }
+      }
+
+      if (!storage.adminTweaked) {
+        if (await tweakAdmin()) {
+          storage.adminTweaked = true
+        }
+      }
+    } else {
+      log(chalk.red('Seravo/wordpress not detected, aborting autorun'))
     }
 
-    if (!storage.gitignoreTweaked) {
-      await tweakGitignore()
-    }
-
-    if (!storage.pluginsEnabled) {
-      await enablePlugins()
-    }
-
-    if (!storage.adminTweaked) {
-      await tweakAdmin()
-    }
-
-    if (!storage.promptedToInstallTheme) {
-      await themeInstaller(config)
-      storage.promptedToInstallTheme = true
-    }
-
-    if (!storage.readmeReplaced) {
-      await replaceREADME()
-    }
-
-
-    await writeFile('./storage.json', JSON.stringify(storage))
+    await writeFile('./autorun.json', JSON.stringify(storage))
     process.exit(0)
   } catch(e) {
     console.error(e)

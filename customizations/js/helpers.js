@@ -4,6 +4,7 @@ const path = require('path')
 const { spawn } = require('child_process')
 const passwordgenerator = require('generate-password')
 const replace = require('node-replace')
+const rimraf = require('rimraf')
 
 function readFile(pathToFile) {
   return new Promise((resolve, reject) => {
@@ -62,9 +63,35 @@ function isInstalledAsDropIn() {
   })
 }
 
+function remove(filePath) {
+  return new Promise((resolve, reject) => {
+    rimraf(filePath, {}, err => {
+      if (err) {
+        reject(err)
+        return
+      }
+
+      resolve(true)
+    })
+  })
+}
+
 function rename(oldPath, newPath) {
   return new Promise((resolve, reject) => {
     fs.rename(oldPath, newPath, err => {
+      if (err) {
+        reject(err)
+        return
+      }
+
+      resolve(true)
+    })
+  })
+}
+
+function copy(what, where) {
+  return new Promise((resolve, reject) => {
+    fs.copyFile(what, where, err => {
       if (err) {
         reject(err)
         return
@@ -83,6 +110,18 @@ function password() {
   return passwordgenerator.generate({ length: 32, numbers: true, excludeSimilarChars: true })
 }
 
+function passwordBox(username, password) {
+  // Magical function, written by @terotests
+  const linep = (t,s,f,e) => s + ''.padStart(4,f) + t + ''.padStart(60-t.length,f) + e
+
+  return chalk`{red
+${linep('', '┌', '─', '┐')}
+${linep(`Username: ${username}`, '│', ' ', '│')}
+${linep(`Password: ${password}`, '│', ' ', '│')}
+${linep('', '└', '─', '┘')}
+  }`
+}
+
 module.exports = {
   readFile,
   writeFile,
@@ -90,6 +129,8 @@ module.exports = {
   isInstalledAsDropIn,
   rename,
   replace,
+  remove,
   runInVagrant,
   password,
+  passwordBox,
 }

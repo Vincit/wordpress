@@ -1,11 +1,24 @@
 const path = require('path')
 const inquirer = require('inquirer')
 const chalk = require('chalk')
+const progress = require('progress')
 const log = console.log
 const questions = require('./questions')
-const { streamCommand, isInstalledAsDropIn, rename, replace, runInVagrant, password } = require('./helpers')
+const {
+  streamCommand,
+  rename,
+  replace,
+  remove,
+  runInVagrant,
+  password,
+  passwordBox,
+} = require('./helpers')
+
+const rootDir = path.join(__dirname, '..', '..')
+const rootCmdOpts = { cwd: rootDir }
 
 async function themeInstaller(config) {
+  const { isDropIn } = config
   const url = config.development.domains[0]
   const answers = await inquirer.prompt([
     questions.theme.install,
@@ -25,9 +38,7 @@ async function themeInstaller(config) {
     log(chalk.yellow('Installing base theme: composer require vincit/wordpress-theme-base dev-master --prefer-source'))
 
     try {
-      const isDropIn = await isInstalledAsDropIn()
       const themeDirName = answers.themeName.replace(/\W/g, '') // Strip non alphanumeric
-      const rootDir = path.join(__dirname, '..', '..')
       const themePath = isDropIn ? path.join(rootDir, 'htdocs/wp-content/themes/') : (
         path.join(rootDir, 'vendor')
       )
@@ -37,7 +48,6 @@ async function themeInstaller(config) {
       const newPath = isDropIn ? path.join(themePath, themeDirName) : (
         path.join(themePath, `vincit/${themeDirName}`)
       )
-      const rootCmdOpts = { cwd: rootDir }
       const themeCmdOpts = { cwd: newPath }
 
       await streamCommand('composer', 'require vincit/wordpress-theme-base dev-master --prefer-source'.split(' '), rootCmdOpts)
@@ -114,10 +124,122 @@ async function resetPassword() {
     log(chalk.red(e))
   })
 
-  return `\n\n${pass}\n\n`
+  return passwordBox('vincit.admin', pass)
+}
+
+async function conquer() {
+  return new Promise(resolve => {
+    log(chalk.yellow('Conquering the WordPress world'))
+    const bar = new progress(':bar :current% / :total%', { total: 100 })
+    const timer = setInterval(() => {
+      bar.tick()
+      if (bar.complete) {
+        clearInterval(timer)
+        resolve(chalk.green('Conquered!'))
+      }
+    }, 16)
+  })
+}
+
+async function enableBackups() {
+  try {
+    log(chalk.yellow('Enabling local database backups in case Vagrant commits seppuku'))
+    await runInVagrant(`/data/wordpress/customizations/vagrant-cron.sh &> /dev/null`)
+
+    log(chalk.yellow('Running the backup script'))
+    await runInVagrant(`/data/wordpress/customizations/database-backup.sh`)
+
+    return true
+  } catch(e) {
+    log(chalk.red(e))
+    return false
+  }
+}
+
+async function changeGitHooks() {
+  log(chalk.yellow('Pre-commit hook makes committing often tedious, changing it into pre-push'))
+  return await rename(path.join(rootDir, '.git/hooks/pre-commit'), path.join(rootDir, '.git/hooks/pre-push'))
+}
+
+async function replaceComposerJson() {
+  try {
+    log(chalk.yellow('Replacing Seravo/wordpress composer.json'))
+    await remove(path.join(rootDir, 'composer.json'))
+    await remove(path.join(rootDir, 'composer.lock'))
+    await copy(path.join(rootDir, 'customizations/composer-sample.json'), path.join(rootDir, 'composer.json'))
+
+    log(chalk.yellow('Removing current dependencies'))
+    await remove(path.join(rootDir, 'vendor'))
+    await remove(path.join(rootDir, 'htdocs/wp-content/plugins/') + '*')
+
+    log(chalk.yellow('Installing dependencies'))
+    await streamCommand('composer', 'update mirrors'.split(' '))
+    await streamCommand('composer', 'install'.split(' '))
+
+    return true
+  } catch(e) {
+    log(chalk.red(e))
+    return false
+  }
+}
+
+async function replaceGitIgnore() {
+  try {
+    await remove(path.join(rootDir, '.gitignore'))
+    await copy(path.join(rootDir, 'customizations/gitignore-sample.json'), path.join(rootDir, '.gitignore'))
+
+    return true
+  } catch(e) {
+    log(chalk.red(e))
+    return false
+  }
+}
+
+async function enablePlugins() {
+  return await runInVagrant('wp plugin list --status=inactive --field=name --format=csv | xargs sudo -u vagrant -i -- wp plugin activate --quiet')
+}
+
+async function tweakAdmin() {
+  try {
+    log(chalk.yellow('Ensuring language is en_US for performance reasons'))
+    log(chalk.yellow('Use user language setting if you want a different language'))
+
+    log(chalk.yellow('Deleting the vagrant:vagrant user'))
+    await runInVagrant('wp user delete 1')
+
+    const pass = password()
+    log(chalk.yellow('Creating a new admin user'))
+    await runInVagrant(`wp user create 'vincit.admin' wordpress@vincit.fi --role--role='administrator' --display_name='Administrator' --user_pass='${pass}'`)
+    log(passwordBox('vincit.admin', pass))
+
+    return true
+  } catch(e) {
+    log(chalk.red(e))
+    return false
+  }
+}
+
+async function replaceREADME() {
+  try {
+    await remove(path.join(rootDir, 'README.md'))
+    await copy(path.join(rootDir, 'customizations/README-sample.json'), path.join(rootDir, 'README.md'))
+
+    return true
+  } catch(e) {
+    log(chalk.red(e))
+    return false
+  }
 }
 
 module.exports = {
   themeInstaller,
   resetPassword,
+  conquer,
+  enableBackups,
+  changeGitHooks,
+  replaceComposerJson,
+  replaceGitIgnore,
+  enablePlugins,
+  tweakAdmin,
+  replaceREADME,
 }
