@@ -159,7 +159,10 @@ async function enableBackups() {
 
 async function changeGitHooks() {
   log(chalk.yellow('Pre-commit hook makes committing often tedious, changing it into pre-push'))
-  return await rename(path.join(rootDir, '.git/hooks/pre-commit'), path.join(rootDir, '.git/hooks/pre-push'))
+  return await rename(path.join(rootDir, '.git/hooks/pre-commit'), path.join(rootDir, '.git/hooks/pre-push')).catch(e => {
+    log(chalk.yellow('Failed to alter hooks, are they changed already?'))
+    log(chalk.red(e))
+  })
 }
 
 async function replaceComposerJson() {
