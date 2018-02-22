@@ -12,6 +12,7 @@ const {
   runInVagrant,
   password,
   passwordBox,
+  copy,
 } = require('./helpers')
 
 const rootDir = path.join(__dirname, '..', '..')
@@ -102,7 +103,7 @@ async function themeInstaller(config) {
 
       if (answers.activate) {
         if (isDropIn) {
-          log(await runInVagrant(`wp theme activate ${themeDirName}`))
+          await runInVagrant(`wp theme activate ${themeDirName}`)
         } else {
           log(chalk.yellow('Skipping activation, Vagrant not detected'))
         }
@@ -205,11 +206,11 @@ async function tweakAdmin() {
     log(chalk.yellow('Use user language setting if you want a different language'))
 
     log(chalk.yellow('Deleting the vagrant:vagrant user'))
-    await runInVagrant('wp user delete 1')
+    await runInVagrant('wp user delete 1 --yes')
 
     const pass = password()
     log(chalk.yellow('Creating a new admin user'))
-    await runInVagrant(`wp user create 'vincit.admin' wordpress@vincit.fi --role--role='administrator' --display_name='Administrator' --user_pass='${pass}'`)
+    await runInVagrant(`wp user create 'vincit.admin' wordpress@vincit.fi --role='administrator' --display_name='Administrator' --user_pass='${pass}'`)
     log(passwordBox('vincit.admin', pass))
 
     return true
