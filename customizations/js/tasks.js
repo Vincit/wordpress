@@ -245,7 +245,6 @@ async function switchToSample(config) {
   await runInVagrant(`wp db export /data/wordpress/pre-sample.sql`)
 
   const url = config.development.domains[0]
-  siteurl=$(run "wp option get siteurl")
   log(chalk.yellow('Importing sample database'))
   await runInVagrant(`wp db reset --yes`)
   await runInVagrant(`wp db import /data/wordpress/customizations/base.sql`)
