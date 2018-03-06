@@ -91,14 +91,14 @@ function rename(oldPath, newPath) {
 
 function copy(what, where) {
   return new Promise((resolve, reject) => {
-    fs.copyFile(what, where, err => {
-      if (err) {
-        reject(err)
-        return
-      }
+    const rs = fs.createReadStream(what)
+    const ws = fs.createWriteStream(where);
 
-      resolve(true)
-    })
+    rs.on('error', reject)
+    ws.on('error', reject)
+    ws.on('close', resolve)
+
+    rs.pipe(ws)
   })
 }
 
