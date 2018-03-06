@@ -240,6 +240,19 @@ async function replaceREADME() {
   }
 }
 
+async function switchToSample(config) {
+  log(chalk.yellow('Saving current database to /data/wordpress/pre-sample.sql'))
+  await runInVagrant(`wp db export /data/wordpress/pre-sample.sql`)
+
+  const url = config.development.domains[0]
+  siteurl=$(run "wp option get siteurl")
+  log(chalk.yellow('Importing sample database'))
+  await runInVagrant(`wp db reset --yes`)
+  await runInVagrant(`wp db import /data/wordpress/customizations/base.sql`)
+  await runInVagrant(`wp search-replace --all-tables https://wordpress.local ${url}`)
+  log(chalk.yellow('Import done'))
+}
+
 module.exports = {
   themeInstaller,
   resetPassword,
@@ -251,4 +264,5 @@ module.exports = {
   enablePlugins,
   tweakAdmin,
   replaceREADME,
+  switchToSample,
 }
