@@ -228,7 +228,7 @@ async function tweakAdmin() {
 async function replaceREADME() {
   try {
     await remove(path.join(rootDir, 'README.md'))
-    await copy(path.join(rootDir, 'customizations/README-sample.json'), path.join(rootDir, 'README.md'))
+    await copy(path.join(rootDir, 'customizations/README-sample.md'), path.join(rootDir, 'README.md'))
 
     return true
   } catch(e) {
