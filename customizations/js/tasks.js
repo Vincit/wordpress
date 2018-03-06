@@ -74,10 +74,12 @@ async function themeInstaller(config) {
         recursive: true,
         silent: false,
       })
-      log(chalk.yellow(`Replacing wordpress.local with ${answers.changeURL}`))
+
+      const newURL = answers.changeURL || url
+      log(chalk.yellow(`Replacing wordpress.local with ${newURL}`))
       replace({
         regex: 'wordpress.local',
-        replacement: answers.changeURL,
+        replacement: newURL,
         paths: [newPath],
         recursive: true,
         silent: false,
