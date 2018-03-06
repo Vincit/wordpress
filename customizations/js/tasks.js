@@ -191,6 +191,7 @@ async function replaceComposerJson() {
 
 async function replaceGitIgnore() {
   try {
+    log(chalk.yellow('Replacing .gitignore'))
     await remove(path.join(rootDir, '.gitignore'))
     await copy(path.join(rootDir, 'customizations/gitignore-sample.json'), path.join(rootDir, '.gitignore'))
 
@@ -202,6 +203,7 @@ async function replaceGitIgnore() {
 }
 
 async function enablePlugins() {
+  log(chalk.yellow('Enabling all installed plugins'))
   return await runInVagrant('wp plugin list --status=inactive --field=name --format=csv | xargs sudo -u vagrant -i -- wp plugin activate --quiet')
 }
 
@@ -227,6 +229,7 @@ async function tweakAdmin() {
 
 async function replaceREADME() {
   try {
+    log(chalk.yellow('Replacing the README'))
     await remove(path.join(rootDir, 'README.md'))
     await copy(path.join(rootDir, 'customizations/README-sample.md'), path.join(rootDir, 'README.md'))
 
