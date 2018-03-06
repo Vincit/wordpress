@@ -179,8 +179,8 @@ async function replaceComposerJson() {
     await remove(path.join(rootDir, 'htdocs/wp-content/plugins/') + '*')
 
     log(chalk.yellow('Installing dependencies'))
-    await streamCommand('composer', 'update mirrors'.split(' '))
-    await streamCommand('composer', 'install'.split(' '))
+    await streamCommand('composer', 'update mirrors'.split(' '), rootCmdOpts)
+    await streamCommand('composer', 'install'.split(' '), rootCmdOpts)
 
     return true
   } catch(e) {
