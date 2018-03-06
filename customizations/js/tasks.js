@@ -261,7 +261,7 @@ async function switchToSample(config) {
   log(chalk.yellow('Importing sample database'))
   await runInVagrant(`wp db reset --yes`)
   await runInVagrant(`wp db import /data/wordpress/customizations/base.sql`)
-  await runInVagrant(`wp search-replace --all-tables https://wordpress.local ${url}`)
+  await runInVagrant(`wp search-replace --all-tables wordpress.local ${url}`)
   log(chalk.yellow('Import done'))
 }
 
