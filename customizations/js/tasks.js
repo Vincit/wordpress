@@ -154,13 +154,16 @@ async function conquer() {
   })
 }
 
-async function enableBackups() {
+async function tweakVagrant() {
   try {
     log(chalk.yellow('Enabling local database backups in case Vagrant commits seppuku'))
     await runInVagrant(`/data/wordpress/customizations/vagrant-cron.sh &> /dev/null`)
 
     log(chalk.yellow('Running the backup script'))
     await runInVagrant(`/data/wordpress/customizations/database-backup.sh`)
+
+    log(chalk.yellow('Changing shell config'))
+    await runInVagrant(`cp /data/wordpress/customizations/.bash_profile /home/vagrant/.profile`)
 
     return true
   } catch(e) {
@@ -266,7 +269,7 @@ module.exports = {
   themeInstaller,
   resetPassword,
   conquer,
-  enableBackups,
+  tweakVagrant,
   changeGitHooks,
   replaceComposerJson,
   replaceGitIgnore,

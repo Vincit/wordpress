@@ -14,7 +14,7 @@ const {
   themeInstaller,
   resetPassword,
   conquer,
-  enableBackups,
+  tweakVagrant,
   changeGitHooks,
   replaceComposerJson,
   replaceGitIgnore,
@@ -71,7 +71,7 @@ async function autorun(config = {}, storage = {}) {
     log(await conquer() + '\n')
 
     if (config.isDropIn) {
-      await enableBackups()
+      await tweakVagrant()
       await changeGitHooks()
 
       if (!storage.composerJsonReplaced) {
