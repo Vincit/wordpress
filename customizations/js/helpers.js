@@ -130,6 +130,7 @@ module.exports = {
   rename,
   replace,
   remove,
+  copy,
   runInVagrant,
   password,
   passwordBox,
