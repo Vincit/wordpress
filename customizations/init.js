@@ -71,18 +71,18 @@ async function autorun(config = {}, storage = {}) {
     log(await conquer() + '\n')
 
     if (config.isDropIn) {
-      if (!storage.promptedToInstallTheme) {
-        if (await themeInstaller(config)) {
-          storage.promptedToInstallTheme = true
-        }
-      }
-
       await enableBackups()
       await changeGitHooks()
 
       if (!storage.composerJsonReplaced) {
         if (await replaceComposerJson()) {
           storage.composerJsonReplaced = true
+        }
+      }
+
+      if (!storage.promptedToInstallTheme) {
+        if (await themeInstaller(config)) {
+          storage.promptedToInstallTheme = true
         }
       }
 
