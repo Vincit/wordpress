@@ -85,20 +85,30 @@ async function themeInstaller(config) {
         silent: false,
       })
 
-      if (answers.trackInGit) {
-        log(chalk.yellow('Creating the initial commit'))
-        await streamCommand('git', `remote remove origin`.split(' '), themeCmdOpts)
-        await streamCommand('git', `remote add origin ${answers.gitURL}`.split(' '), themeCmdOpts)
-        await streamCommand('git', `add .`.split(' '), themeCmdOpts)
-        await streamCommand('git', `commit -m "Initial commit"`.split(' '), themeCmdOpts)
-        await streamCommand('git', `push -u origin master`.split(' '), themeCmdOpts)
-      } else if (isDropIn) {
-        await streamCommand('rm', `-rf .git`.split(' '), themeCmdOpts)
+      try {
+        if (answers.trackInGit) {
+          log(chalk.yellow('Creating the initial commit'))
+          await streamCommand('git', `remote remove origin`.split(' '), themeCmdOpts)
+          await streamCommand('git', `remote add origin ${answers.gitURL}`.split(' '), themeCmdOpts)
+          await streamCommand('git', `add .`.split(' '), themeCmdOpts)
+          await streamCommand('git', `commit -m "Initial commit"`.split(' '), themeCmdOpts)
+          await streamCommand('git', `push -u origin master`.split(' '), themeCmdOpts)
+        } else if (isDropIn) {
+          await streamCommand('rm', `-rf .git`.split(' '), themeCmdOpts)
+        }
+      } catch (e) {
+        log(chalk.yellow('Failed to do git stuff'))
+        log(e)
       }
 
-      log(chalk.yellow('Installing dependencies and building the theme'))
-      await streamCommand('npm', ['install'], themeCmdOpts)
-      await streamCommand('composer', ['install'], themeCmdOpts)
+      try {
+        log(chalk.yellow('Installing dependencies and building the theme'))
+        await streamCommand('npm', ['install'], themeCmdOpts)
+        await streamCommand('composer', ['install'], themeCmdOpts)
+      } catch (e) {
+        log(chalk.yellow('Failed to install dependencies'))
+        log(e)
+      }
 
       log(chalk.yellow('Removing vincit/wordpress-theme-base so it isn\'t installed again'))
       await streamCommand('composer', 'remove vincit/wordpress-theme-base'.split(' '), rootCmdOpts)
