@@ -52,8 +52,8 @@ myrecording
 .DS_Store
 
 # vincit/wordpress
-/customizations
-!/customizations/autorun.json
-!/customizations/bin
+customizations/*
+!customizations/autorun.json
+!customizations/bin
 /install.sh
 /vagrant-up-customizer.sh
