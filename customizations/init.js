@@ -39,18 +39,19 @@ development:
 `
     })
   const config = yaml.parse(configYaml)
-  const storage = await readFile('./autorun.json').catch(e => {
+  const defaults = {
+    promptedToInstallTheme: false,
+    readmeReplaced: false,
+    composerJsonReplaced: false,
+    gitignoreTweaked: false,
+    pluginsEnabled: false,
+    adminTweaked: false,
+  }
+  const autorunFile = await readFile(path.join(__dirname, './autorun.json')).catch(e => {
     log(chalk.red(e))
-
-    return {
-      promptedToInstallTheme: false,
-      readmeReplaced: false,
-      composerJsonReplaced: false,
-      gitignoreTweaked: false,
-      pluginsEnabled: false,
-      adminTweaked: false,
-    }
+    return false
   })
+  const storage = autorunFile ? JSON.parse(autorunFile) : defaults
 
   config.isDropIn = await isInstalledAsDropIn()
 
@@ -113,7 +114,7 @@ async function autorun(config = {}, storage = {}) {
       log(chalk.red('Seravo/wordpress not detected, aborting autorun'))
     }
 
-    await writeFile('./autorun.json', JSON.stringify(storage))
+    await writeFile(path.join(__dirname, './autorun.json'), JSON.stringify(storage))
     process.exit(0)
   } catch(e) {
     console.error(e)
