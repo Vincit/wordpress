@@ -99,7 +99,7 @@
   },
   "require-dev": {
     "rarst/wps": "dev-master",
-    "vincit/wordpress": "@dev"
+    "vincit/wordpress": "^1.0.4"
   },
   "extra": {
     "installer-paths": {
