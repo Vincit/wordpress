@@ -17,9 +17,9 @@ git clone git@github.com:Seravo/wordpress.git wordpress.local
 ```
 
 ### Add this package
-~~Run `composer require --dev vincit/wordpress` for the stable version.~~
+Run `composer require --dev vincit/wordpress` for the stable version.
 
-Use `composer require --dev vincit/wordpress dev-master` to get the latest version.
+Use `composer require --dev vincit/wordpress dev-master` to get the latest version. ~May~ will contain bugs. 
 
 Finally run `vagrant up`.
 
