@@ -37,7 +37,7 @@ const questions = {
     name: {
       type: 'input',
       name: 'themeName',
-      message: `What is the ${chalk.strikethrough("baby's")} theme name?`,
+      message: `What is the theme name?`,
       validate: (value) => value.length ? true : 'You can figure a name out.',
       when: themeShow,
     },
