@@ -217,7 +217,7 @@ async function replaceGitIgnore() {
 
 async function enablePlugins() {
   log(chalk.yellow('Enabling all installed plugins'))
-  return await runInVagrant('wp plugin list --status=inactive --field=name --format=csv | xargs sudo -u vagrant -i -- wp plugin activate --quiet')
+  return await runInVagrant('wp plugin activate --all')
 }
 
 async function tweakAdmin() {
