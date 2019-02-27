@@ -98,7 +98,7 @@
     "wpackagist-theme/twentyseventeen": "*"
   },
   "require-dev": {
-    "rarst/wps": "dev-master",
+    "rarst/wps": "1.1",
     "vincit/wordpress": "^1.0.4"
   },
   "extra": {
