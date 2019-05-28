@@ -57,3 +57,6 @@ customizations/*
 !customizations/bin
 /install.sh
 /vagrant-up-customizer.sh
+
+# Query Monitor
+htdocs/wp-content/db.php
