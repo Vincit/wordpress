@@ -60,3 +60,6 @@ customizations/*
 
 # Query Monitor
 htdocs/wp-content/db.php
+
+# Logs
+htdocs/wp-content/*.log
