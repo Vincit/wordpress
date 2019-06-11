@@ -86,9 +86,8 @@
     "wpackagist-plugin/enhanced-media-library": "*",
     "wpackagist-plugin/post-expirator": "*",
     "wpackagist-plugin/query-monitor": "*",
-    "anttiviljami/wp-libre-form": "*",
-    "elliotcondon/advanced-custom-fields-pro": "*",
-    "mikkosaari/relevanssi-premium": "*",
+    "satispress/advanced-custom-fields-pro": "*",
+    "satispress/relevanssi-premium": "*",
 
     "roots/soil": "^3.7.0",
     "aucor/polylang-copy-content": ">=0.1.1",
