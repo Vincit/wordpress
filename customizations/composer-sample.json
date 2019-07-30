@@ -75,7 +75,7 @@
     "vlucas/phpdotenv": "^2.4",
     
     "koodimonni-language/fi": "*",
-    "koodimonni-language/sv_SE": "*",
+    "koodimonni-language/sv_se": "*",
     
     "seravo/seravo-plugin": "*",
 
