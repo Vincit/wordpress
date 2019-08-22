@@ -21,7 +21,7 @@ variables:
   STAGING_HOST: "staging.example.com"
   PROD_SSH_PORT: "11111"
   STAGING_SSH_PORT: "11222"
-  THEME_SLUG: "jns"
+  THEME_SLUG: "theme_dir"
 
 stages: 
   - install
