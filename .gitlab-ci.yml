@@ -35,7 +35,7 @@ cache:
     - composer-cache/
 
 before_script: 
-  - sudo apk add mysql-client sshpass
+  - sudo apk add mysql-client sshpass pkgconfig autoconf automake libtool nasm build-base zlib-dev
 
   # Install router so that we don't need nginx/php-fpm
   - curl -s https://raw.githubusercontent.com/Seravo/wordpress-test-template/master/lib/router.php > htdocs/router.php
