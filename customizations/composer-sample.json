@@ -85,7 +85,6 @@
     "wpackagist-plugin/autodescription": "*",
     "wpackagist-plugin/rich-text-tags": "*",
     "wpackagist-plugin/imsanity": "*",
-    "wpackagist-plugin/enhanced-media-library": "*",
     "wpackagist-plugin/post-expirator": "*",
     "wpackagist-plugin/query-monitor": "*",
     "satispress/advanced-custom-fields-pro": "*",
