@@ -118,6 +118,7 @@ test:
 #    - sudo find $CI_PROJECT_DIR -type d -exec chmod 755 {} \;
 #    - echo "Deploy to staging server"
 #    - sshpass -e rsync -av --progress --exclude='.git' --exclude='composer-cache' --exclude='node_modules' --exclude='*/wp-content/uploads/*' --exclude='*/wp-content/db.php' --delete -e "ssh -T -o Compression=no -o StrictHostKeyChecking=no -p $STAGING_SSH_PORT" $CI_PROJECT_DIR/ $SSH_USERNAME@$STAGING_HOST:/data/wordpress
+#.   - sshpass -e ssh -q -o StrictHostKeyChecking=no $SSH_USERNAME@$STAGING_HOST -p $STAGING_SSH_PORT 'wp-restart-nginx && wp-flush-cache && wp-fix-languages'
 #   environment: 
 #     name: staging
 #     url: https://$STAGING_HOST
@@ -131,6 +132,7 @@ test:
 #    - sudo find $CI_PROJECT_DIR -type d -exec chmod 755 {} \;
 #    - echo "Deploy to production server"
 #    - sshpass -e rsync -av --progress --exclude='.git' --exclude='composer-cache' --exclude='node_modules' --exclude='*/wp-content/uploads/*' --exclude='*/wp-content/db.php' --delete -e "ssh -T -o Compression=no -o StrictHostKeyChecking=no -p $PROD_SSH_PORT" $CI_PROJECT_DIR/ $SSH_USERNAME@$PROD_HOST:/data/wordpress
+#.   - sshpass -e ssh -q -o StrictHostKeyChecking=no $SSH_USERNAME@$PROD_HOST -p $PROD_SSH_PORT 'wp-restart-nginx && wp-flush-cache && wp-fix-languages'
 #  environment: 
 #    name: production
 #    url: https://$PROD_HOST
