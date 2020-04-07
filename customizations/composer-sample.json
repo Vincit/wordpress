@@ -59,10 +59,6 @@
     },
     {
       "type": "composer",
-      "url": "https://repo.packagist.com/vincit/"
-    },
-    {
-      "type": "composer",
       "url": "https://satispress.vincit.io/satispress/"
     }
   ],
